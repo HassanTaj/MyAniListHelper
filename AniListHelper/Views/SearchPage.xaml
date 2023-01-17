@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="AniListHelper.Views.SearchPage"
+             xmlns:models="clr-namespace:AniListHelper.Models"
+             NavigationPage.HasBackButton="false">
+    <ContentPage.Resources>
+        <Style x:Key = "btnStyle" TargetType="Button">
+            <Setter Property = "BackgroundColor" Value = "#1f1f1f" />
+            <Setter Property = "TextColor" Value = "#fff" />
+            <Setter Property = "FontSize" Value = "12" />
+            <Setter Property = "CornerRadius" Value = "0" />
+        </Style>
+    </ContentPage.Resources>
+
+    <!--AlignContent="Center"
+            JustifyContent="Center"
+            IsVisible="true"
+            Direction="Column"-->
+    <FlexLayout
+        Direction="Column"
+        VerticalOptions="FillAndExpand"
+        Position="Relative"
+        FlexLayout.Basis="Auto"
+        Wrap="NoWrap"
+       >
+        <VerticalStackLayout  
+            VerticalOptions="StartAndExpand"
+            HorizontalOptions="FillAndExpand"
+            FlexLayout.Basis="65"
+                Margin="5">
+            <StackLayout
+                Orientation="Horizontal"
+                Padding="5">
+                <SearchBar x:Name="searchEntry"
+                           BackgroundColor="#1e1e1e"
+                           TextColor="#FFF"
+                           TextChanged="searchEntry_TextChanged" 
+                           HorizontalOptions="FillAndExpand"
+                           SearchButtonPressed="searchBtn_Clicked"
+                           />
+                <Button x:Name="searchBtn"
+                      
+                        Style="{StaticResource btnStyle}"
+                        Text="Search" 
+                        Clicked="searchBtn_Clicked"/>
+            </StackLayout>
+
+            <!--<Label x:Name="testLabel"
+               BackgroundColor="#1e1e1e"
+               TextColor="#FFF"
+               Padding="5"
+               FontSize="Small"  
+               FontAttributes="Bold"
+               Text="Search Anime"
+               VerticalOptions="FillAndExpand"
+               HorizontalOptions="FillAndExpand" />-->
+
+        </VerticalStackLayout>
+
+        <CollectionView x:Name="itemsView"
+            FlexLayout.Basis="45"
+                        ItemSizingStrategy="MeasureAllItems"
+                        VerticalOptions="StartAndExpand"
+                        HorizontalOptions="FillAndExpand"
+                        SelectionMode="Single"
+                        ItemsSource="{Binding MediaEntries}">
+            <CollectionView.ItemTemplate>
+                <DataTemplate x:DataType="models:MediaEntryModel">
+                    <StackLayout Padding="10" Spacing="2"
+                                                 HorizontalOptions="FillAndExpand"
+                                                 VerticalOptions="FillAndExpand">
+                        <Label Text="{Binding Name}"></Label>
+                        <Label Text="{Binding Status}" FontSize="10" FontAttributes="Bold" ></Label>
+                        <Label Text="{Binding OtherNames, StringFormat=({0})}" FontSize="10" ></Label>
+                    </StackLayout>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+
+        </CollectionView>
+
+        <VerticalStackLayout
+                FlexLayout.Basis="Auto"
+                x:Name="lodingView"
+                IsVisible="True"
+                VerticalOptions="FillAndExpand"
+                HorizontalOptions="FillAndExpand">
+            <Label x:Name="progressLabel"
+                       Text="Loading.."
+                       VerticalOptions="CenterAndExpand"
+                       HorizontalOptions="CenterAndExpand" />
+            <Button x:Name="searchFromAniList" 
+                    Text="Search on anylist and add"
+                    Margin="10"
+                    IsVisible="False"
+                    Style="{StaticResource btnStyle}"
+                    Clicked="searchFromAniList_Clicked"
+                    />
+
+            <ActivityIndicator
+                       x:Name="activityIndicator"
+                       IsRunning="True"
+                       IsVisible="True"
+                       HorizontalOptions="CenterAndExpand"
+                       VerticalOptions="CenterAndExpand"/>
+        </VerticalStackLayout>
+
+    </FlexLayout>
+
+</ContentPage>
