@@ -12,7 +12,7 @@ It takes a lot of time and it gets frustrating when after so many clicks and key
 
 ### Solution
 
-The solution is as follows
+The solution is as follows:
 
 **Features:**
 
@@ -34,6 +34,11 @@ The solution is as follows
 
 - Install Visual Studio
 - Install .Net MAUI Package
+- Clone the repository
+- Create a branch from `dev` for yourself `dev_{your_name_here}`
+- Commit your code only into your branch
+- Build project
+- Run the project by pressing F5
 
 **For Emulator:**
 
@@ -54,6 +59,8 @@ The solution is as follows
   - User `adb devices` to check if your devices is connected
   - Allow when prompted
   - Press F5 to enter debugging mode
+
+----
 
 ### Challenge
 
