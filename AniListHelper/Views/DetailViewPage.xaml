@@ -34,7 +34,7 @@
                 </Grid>-->
             </Grid>
             <Grid Margin="10,15,20,20" HorizontalOptions="Start" RowDefinitions="Auto,Auto,Auto" ColumnDefinitions="Auto,Auto,Auto">
-                <Label x:Name="LblDescription" FontSize="10" ></Label>
+                <!--<Label x:Name="LblDescription" FontSize="10" ></Label>-->
                 <Label Grid.Column="0" Grid.Row="0" Margin="10,0,50,0" FontSize="Header" FontAttributes="Bold" Text="Start Date"></Label>
                 <Label Grid.Column="0" Grid.Row="1" Margin="10,0,50,0" x:Name="LblStartDate" FontSize="Small"></Label>
                 <Label Grid.Column="1" Grid.Row="0" Margin="10,0,50,0" Text="End Date" FontSize="Header"></Label>
