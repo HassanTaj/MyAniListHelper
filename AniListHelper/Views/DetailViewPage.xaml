@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="AniListHelper.Views.DetailViewPage"
+             BackgroundColor="#202125">
+
+    <!--<ContentPage.ToolbarItems>
+        <ToolbarItem Text="Back" />
+    </ContentPage.ToolbarItems>-->
+
+    <FlexLayout Direction="Column"
+        VerticalOptions="Fill"
+        Position="Relative" FlexLayout.Basis="Auto"
+        Wrap="Wrap">
+        <!--<Button Text="ADD" HeightRequest="50" FontAttributes="Bold" FontSize="20" WidthRequest="100" HorizontalOptions="Start"></Button>-->
+        <VerticalStackLayout>
+            <Grid Margin="0,10,0,10" RowDefinitions="Auto,Auto,Auto" ColumnDefinitions="Auto,Auto,Auto">
+                <Image Grid.Row="0" Grid.Column="0" Source="https://picsum.photos/seed/picsum/200/300" HeightRequest="140" WidthRequest="120"></Image>
+                <!--<FlexLayout Grid.Row="0" Grid.Column="1" 
+                            Direction="Row" JustifyContent="SpaceEvenly">
+                    <Label x:Name="LblName" FontSize="Medium"></Label>
+                    <Label x:Name="LblStatus" FontSize="Subtitle" FontAttributes="Bold" ></Label>
+                    <Label x:Name="LblOtherNames" FontSize="10" ></Label>
+                </FlexLayout>-->
+                <StackLayout Grid.Row="0" Grid.Column="1">
+                    <Label x:Name="LblName" FontSize="Medium" LineBreakMode="WordWrap" MaxLines="1"></Label>
+                    <Label x:Name="LblStatus" FontSize="Subtitle" FontAttributes="Bold" ></Label>
+                    <Label x:Name="LblOtherNames" FontSize="10" ></Label>
+                </StackLayout>
+                <!--<Grid Grid.Row="0" Grid.Column="1" RowDefinitions="Auto,Auto,Auto" ColumnDefinitions="Auto,Auto,Auto">
+                    <Label Grid.Row="0" x:Name="LblName" FontSize="Medium"></Label>
+                    <Label Grid.Row="1" x:Name="LblStatus" FontSize="Subtitle" FontAttributes="Bold" ></Label>
+                    <Label Grid.Row="2" x:Name="LblOtherNames" FontSize="10" ></Label>
+                </Grid>-->
+            </Grid>
+            <Grid Margin="10,15,20,20" HorizontalOptions="Start" RowDefinitions="Auto,Auto,Auto" ColumnDefinitions="Auto,Auto,Auto">
+                <Label x:Name="LblDescription" FontSize="10" ></Label>
+                <Label Grid.Column="0" Grid.Row="0" Margin="10,0,50,0" FontSize="Header" FontAttributes="Bold" Text="Start Date"></Label>
+                <Label Grid.Column="0" Grid.Row="1" Margin="10,0,50,0" x:Name="LblStartDate" FontSize="Small"></Label>
+                <Label Grid.Column="1" Grid.Row="0" Margin="10,0,50,0" Text="End Date" FontSize="Header"></Label>
+                <Label Grid.Column="1" Grid.Row="1" Margin="10,0,50,0" FontAttributes="Bold" x:Name="LblEndDate" FontSize="Small"></Label>
+            </Grid>
+        </VerticalStackLayout>
+    </FlexLayout>
+</ContentPage>

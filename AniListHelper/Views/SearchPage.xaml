@@ -35,15 +35,14 @@
                 <SearchBar x:Name="searchEntry"
                            BackgroundColor="#1e1e1e"
                            TextColor="#FFF"
-                           TextChanged="searchEntry_TextChanged" 
+                           TextChanged="SearchEntry_TextChanged" 
                            HorizontalOptions="FillAndExpand"
-                           SearchButtonPressed="searchBtn_Clicked"
+                           SearchButtonPressed="SearchBtn_Clicked"
                            />
                 <Button x:Name="searchBtn"
-                      
                         Style="{StaticResource btnStyle}"
                         Text="Search" 
-                        Clicked="searchBtn_Clicked"/>
+                        Clicked="SearchBtn_Clicked"/>
             </StackLayout>
 
             <!--<Label x:Name="testLabel"
@@ -58,7 +57,7 @@
 
         </VerticalStackLayout>
 
-        <CollectionView x:Name="itemsView"
+        <CollectionView x:Name="itemsView" SelectionChanged="AnimeSelectionEvent"
             FlexLayout.Basis="45"
                         ItemSizingStrategy="MeasureAllItems"
                         VerticalOptions="StartAndExpand"
@@ -89,12 +88,12 @@
                        Text="Loading.."
                        VerticalOptions="CenterAndExpand"
                        HorizontalOptions="CenterAndExpand" />
-            <Button x:Name="searchFromAniList" 
-                    Text="Search on anylist and add"
+            <Button x:Name="SearchFromAniList" 
+                    Text="Search on anilist and add"
                     Margin="10"
                     IsVisible="False"
                     Style="{StaticResource btnStyle}"
-                    Clicked="searchFromAniList_Clicked"
+                    Clicked="SearchFromAniList_Clicked"
                     />
 
             <ActivityIndicator

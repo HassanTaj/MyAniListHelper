@@ -1,16 +1,16 @@
-using Android.Widget;
+using System.Collections.ObjectModel;
+
 using AniListHelper.Infrastructure;
 using AniListHelper.Models;
+
 using AniListNet;
 using AniListNet.Objects;
 using AniListNet.Parameters;
+
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Maui;
-using Microsoft.Maui.Controls;
+
 using Newtonsoft.Json;
-using SQLite;
-using System.Collections.ObjectModel;
-using System.Linq;
+
 using User = AniListNet.Objects.User;
 
 namespace AniListHelper.Views;
@@ -64,8 +64,7 @@ public partial class SearchPage : ContentPage {
                 mediaEntries.AddRange(alluserEntries.Data);
                 if (pageindex != userEntries.LastPageIndex && alluserEntries.HasNextPage == true) {
                     pageindex++;
-                }
-                else {
+                } else {
                     break;
                 }
             }
@@ -97,11 +96,10 @@ public partial class SearchPage : ContentPage {
         return _aniclient.IsAuthenticated ? false : true;
     }
 
-    private async void searchEntry_TextChanged(object sender, TextChangedEventArgs e) {
-
+    private async void SearchEntry_TextChanged(object sender, TextChangedEventArgs e) {
     }
 
-    private async void searchBtn_Clicked(object sender, EventArgs e) {
+    private async void SearchBtn_Clicked(object sender, EventArgs e) {
         var searchTerm = searchEntry.Text;
 
         if (!string.IsNullOrEmpty(searchTerm)) {
@@ -124,18 +122,16 @@ public partial class SearchPage : ContentPage {
             if (data.Count == 0) {
                 progressLabel.Text = "No Records Found";
                 activityIndicator.IsVisible = false;
-                searchFromAniList.IsVisible = true;
-            }
-            else {
+                SearchFromAniList.IsVisible = true;
+            } else {
                 itemsView.IsVisible = true;
                 activityIndicator.IsVisible = false;
                 activityIndicator.IsRunning = false;
                 lodingView.IsVisible = false;
-                searchFromAniList.IsVisible = false;
+                SearchFromAniList.IsVisible = false;
 
             }
-        }
-        else {
+        } else {
             MediaEntries.Clear();
             progressLabel.Text = "No Records Found";
             lodingView.IsVisible = true;
@@ -148,7 +144,7 @@ public partial class SearchPage : ContentPage {
         //lodingView.IsVisible = false;
     }
 
-    private async void searchFromAniList_Clicked(object sender, EventArgs e) {
+    private async void SearchFromAniList_Clicked(object sender, EventArgs e) {
         var searchResu = await _aniclient.SearchMediaAsync(new SearchMediaFilter {
             Query = searchEntry.Text,
             Type = MediaType.Anime,
@@ -174,8 +170,19 @@ public partial class SearchPage : ContentPage {
             activityIndicator.IsVisible = false;
             activityIndicator.IsRunning = false;
             lodingView.IsVisible = false;
-            searchFromAniList.IsVisible = false;
+            SearchFromAniList.IsVisible = false;
         }
 
+    }
+
+    //private async void OnTapped(object sender, EventArgs e) { 
+    //    await Navigation.PushModalAsync(new DetailViewPage());
+    //}
+
+    private async void AnimeSelectionEvent(object sender, SelectionChangedEventArgs e) {
+        var selectedItem = e.CurrentSelection.FirstOrDefault() as MediaEntryModel;
+        if (selectedItem == null) return;
+        await Navigation.PushAsync(new DetailViewPage(selectedItem));
+        ((CollectionView)sender).SelectedItem = null;
     }
 }
