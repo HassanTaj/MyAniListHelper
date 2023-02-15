@@ -4,6 +4,7 @@
              x:Class="AniListHelper.Views.SearchPage"
              xmlns:models="clr-namespace:AniListHelper.Models"
              NavigationPage.HasBackButton="false">
+
     <ContentPage.Resources>
         <Style x:Key = "btnStyle" TargetType="Button">
             <Setter Property = "BackgroundColor" Value = "#1f1f1f" />
@@ -13,22 +14,47 @@
         </Style>
     </ContentPage.Resources>
 
-    <!--AlignContent="Center"
-            JustifyContent="Center"
-            IsVisible="true"
-            Direction="Column"-->
+    <!--<ContentPage.ToolbarItems>
+        <StackLayout Padding="5" Orientation="Horizontal" HorizontalOptions="FillAndExpand">
+        <Button BackgroundColor="#1e1e1e" 
+                TextColor="#FFF" 
+                x:Name="Logout" 
+                Text="Logout"
+                HeightRequest="20" 
+                FontAttributes="Bold" 
+                FontSize="20" WidthRequest="100" 
+                HorizontalOptions="Start"
+                Clicked="logOut_Clicked">
+        </Button>
+    </StackLayout>
+
+    </ContentPage.ToolbarItems>-->
+
     <FlexLayout
         Direction="Column"
         VerticalOptions="FillAndExpand"
         Position="Relative"
         FlexLayout.Basis="Auto"
-        Wrap="NoWrap"
-       >
+        Wrap="NoWrap">
+
+        <StackLayout  Padding="5" >
+            <Button BackgroundColor="#1e1e1e" 
+                TextColor="#FFF" 
+                x:Name="Logout" 
+                Text="Logout"
+                HeightRequest="20" 
+                FontAttributes="Bold" 
+                FontSize="20" WidthRequest="100" 
+                HorizontalOptions="End">
+            </Button>
+        </StackLayout>
+
         <VerticalStackLayout  
             VerticalOptions="StartAndExpand"
             HorizontalOptions="FillAndExpand"
             FlexLayout.Basis="65"
                 Margin="5">
+
             <StackLayout
                 Orientation="Horizontal"
                 Padding="5">
@@ -58,25 +84,93 @@
 
         </VerticalStackLayout>
 
-        <CollectionView x:Name="itemsView"
+        <!--<CollectionView x:Name="itemsView"
             FlexLayout.Basis="45"
                         ItemSizingStrategy="MeasureAllItems"
                         VerticalOptions="StartAndExpand"
                         HorizontalOptions="FillAndExpand"
                         SelectionMode="Single"
-                        ItemsSource="{Binding MediaEntries}">
+                        ItemsSource="{Binding MediaEntries}"
+                        ItemsLayout="VerticalGrid, 2">
             <CollectionView.ItemTemplate>
                 <DataTemplate x:DataType="models:MediaEntryModel">
-                    <StackLayout Padding="10" Spacing="2"
-                                                 HorizontalOptions="FillAndExpand"
-                                                 VerticalOptions="FillAndExpand">
-                        <Label Text="{Binding Name}"></Label>
+                    -->
+        <!--<Border Stroke="{AppThemeBinding Light=Gray600, Dark=Gray900}"
+                                StrokeThickness="4"
+                                BackgroundColor="#1e1e1e"
+                                StrokeShape="RoundRectangle 10">
+                            <Border.Shadow>
+                                <Shadow Brush="Gray"
+                                        Offset="10,10"
+                                        Opacity=".8">
+
+                                </Shadow>
+
+                            </Border.Shadow>
+                        <Label Text="{Binding Name}"  WidthRequest="200"></Label>
                         <Label Text="{Binding Status}" FontSize="10" FontAttributes="Bold" ></Label>
                         <Label Text="{Binding OtherNames, StringFormat=({0})}" FontSize="10" ></Label>
+                    </Border>-->
+        <!--
+
+                    <StackLayout Padding="10" 
+                                                 HorizontalOptions="FillAndExpand"
+                                                 VerticalOptions="FillAndExpand">
+                            <Label Text="{Binding Name}"></Label>
+                            <Label Text="{Binding Status}" FontSize="10" FontAttributes="Bold" ></Label>
+                            <Label Text="{Binding OtherNames, StringFormat=({0})}" FontSize="10" ></Label>
+
                     </StackLayout>
+
                 </DataTemplate>
             </CollectionView.ItemTemplate>
+        </CollectionView>-->
 
+        <CollectionView ItemsSource="{Binding MediaEntries}" x:Name="itemsView"
+                ItemSizingStrategy="MeasureAllItems"
+                VerticalOptions="StartAndExpand"
+                HorizontalOptions="FillAndExpand"
+                SelectionMode="Single">
+                <!--ItemsLayout="VerticalGrid, 2"-->
+            <CollectionView.ItemsLayout>
+                <GridItemsLayout Orientation="Vertical"
+                        Span="2" />
+            </CollectionView.ItemsLayout>
+            <CollectionView.ItemTemplate>
+                <DataTemplate>
+                    <Grid Padding="15" ColumnDefinitions="Auto,Auto,Auto" RowDefinitions="Auto,Auto,Auto">
+                        <!--<Grid.RowDefinitions>
+                            <RowDefinition Height="35" />
+                            <RowDefinition Height="35" />
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="70" />
+                            <ColumnDefinition Width="80" />
+                        </Grid.ColumnDefinitions>-->
+                        <!--<Border Stroke="{AppThemeBinding Light=Gray600, Dark=Gray900}"
+                                StrokeThickness="4"
+                                BackgroundColor="#1e1e1e"
+                                StrokeShape="RoundRectangle 10">
+                            <Border.Shadow>
+                                <Shadow Brush="Gray" Offset="10,10" Opacity=".8"></Shadow>
+                            </Border.Shadow>-->
+                        <StackLayout Grid.Column="0" Grid.Row="1" Padding="10">
+                            <Image Source="{Binding ImageUrl}"
+                                   Aspect="Fill"
+                                   HorizontalOptions="FillAndExpand"
+                                   HeightRequest="250"
+                                   VerticalOptions="FillAndExpand"/>
+                            <Label Text="{Binding ImageUrl}" FontAttributes="Bold" LineBreakMode="TailTruncation"/>
+                            <Label Text="{Binding Name}" FontAttributes="Bold" LineBreakMode="WordWrap" />
+                            <Label Text="{Binding Status}" LineBreakMode="TailTruncation"  FontAttributes="Italic" VerticalOptions="End" />
+                            <Label Text="{Binding OtherNames}" LineBreakMode="TailTruncation" FontAttributes="Italic" VerticalOptions="End" />
+                        </StackLayout>
+                        <!--</Border>-->
+                    </Grid>
+
+
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
         </CollectionView>
 
         <VerticalStackLayout
@@ -90,7 +184,7 @@
                        VerticalOptions="CenterAndExpand"
                        HorizontalOptions="CenterAndExpand" />
             <Button x:Name="searchFromAniList" 
-                    Text="Search on anylist and add"
+                    Text="Search on anilist and add"
                     Margin="10"
                     IsVisible="False"
                     Style="{StaticResource btnStyle}"

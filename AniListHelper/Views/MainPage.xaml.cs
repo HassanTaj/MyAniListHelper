@@ -1,11 +1,8 @@
 ﻿using AniListHelper.Infrastructure;
-using AniListHelper.Models;
 using AniListHelper.Views;
 using AniListNet;
-using AniListNet.Objects;
 using Newtonsoft.Json;
 using SQLite;
-using System.Text.Json;
 
 namespace AniListHelper;
 

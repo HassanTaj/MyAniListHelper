@@ -1,4 +1,3 @@
-using Android.Widget;
 using AniListHelper.Infrastructure;
 using AniListHelper.Models;
 using AniListNet;
@@ -33,7 +32,6 @@ public partial class SearchPage : ContentPage {
         MediaEntries = new ObservableCollection<MediaEntryModel>(_data);
         BindingContext = this;
     }
-
     private async void Init() {
         var userstr = Preferences.Get(Constants.USER, null);
         _user = null;
@@ -72,6 +70,7 @@ public partial class SearchPage : ContentPage {
             progressLabel.Text = "Syncing Data...";
             if (mediaEntries != null && mediaEntries.Count > 0) {
                 var mediaList = mediaEntries.Select(x => new MediaEntryModel {
+                    ImageUrl = x.Media.Cover.MediumImageUrl.AbsolutePath,
                     Name = $"{x.Media.Title.PreferredTitle}",
                     OtherNames = string.Join(",", new string[] { x.Media.Title.EnglishTitle, x.Media.Title.RomajiTitle, x.Media.Title.NativeTitle }.Where(x => !string.IsNullOrEmpty(x)).ToList()),
                     Status = x.Media.Status.ToString(),
@@ -100,6 +99,7 @@ public partial class SearchPage : ContentPage {
     private async void searchEntry_TextChanged(object sender, TextChangedEventArgs e) {
 
     }
+
 
     private async void searchBtn_Clicked(object sender, EventArgs e) {
         var searchTerm = searchEntry.Text;
