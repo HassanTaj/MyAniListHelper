@@ -349,3 +349,4 @@ MigrationBackup/
 # Ionide (cross platform F# VS Code tools) working folder
 .ionide/
 /AniListHelper/README_USMAN.md
+/AniListHelper/AniListHelper.csproj
