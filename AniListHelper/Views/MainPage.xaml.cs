@@ -1,18 +1,14 @@
 ﻿using AniListHelper.Infrastructure;
-using AniListHelper.Models;
 using AniListHelper.Views;
 using AniListNet;
-using AniListNet.Objects;
 using Newtonsoft.Json;
-using SQLite;
-using System.Text.Json;
+using System.Diagnostics;
 
 namespace AniListHelper;
 
 public partial class MainPage : ContentPage {
     private readonly SecureStorageProcessor _secureStorage;
     private readonly AniClient _aniclient;
-    private readonly SQLiteAsyncConnection _conn;
     private readonly AppDbContext _db;
 
     public MainPage() {
@@ -20,7 +16,7 @@ public partial class MainPage : ContentPage {
         _aniclient = new AniClient();
         _secureStorage = new SecureStorageProcessor();
         var path = Constants.Database.DatabasePath;
-        ///data/user/0/com.companyname.anilisthelper/files/anilisthelper.db3
+        //data/user/0/com.companyname.anilisthelper/files/anilisthelper.db3
         //_conn = new SQLiteAsyncConnection(Constants.Database.DatabasePath, Constants.Database.Flags);
         _db = new AppDbContext();
         Init();
@@ -41,40 +37,41 @@ public partial class MainPage : ContentPage {
             loginBtn.IsVisible = true;
             activityIndicator.IsVisible = false;
         }
-        //var res = await _conn.CreateTableAsync<MediaEntryModel>();
-
     }
 
     private async void OnCounterClicked(object sender, EventArgs e) {
         try {
             WebAuthenticatorResult authResult = default;
-#if WINDOWS
-            authResult = await WebAuthenticator.AuthenticateAsync(
+
+            if (DeviceInfo.Platform == DevicePlatform.Android) {
+                authResult = await WebAuthenticator.Default.AuthenticateAsync(
                 new WebAuthenticatorOptions() {
                     Url = new Uri(Constants.App.AUTH_URI),
                     CallbackUrl = new Uri(Constants.App.REDIRECT_URI),
                     PrefersEphemeralWebBrowserSession = true
                 });
-#endif
+            }
+            if (DeviceInfo.Platform == DevicePlatform.WinUI) {
+                var result = await new AuthBrowser().InvokeAsync(options: new IdentityModel.OidcClient.Browser.BrowserOptions(Constants.App.AUTH_URI, Constants.App.REDIRECT_URI));
 
-#if ANDROID
-            authResult = await WebAuthenticator.Default.AuthenticateAsync(
-                new WebAuthenticatorOptions() {
-                    Url = new Uri(Constants.App.AUTH_URI),
-                    CallbackUrl = new Uri(Constants.App.REDIRECT_URI),
-                    PrefersEphemeralWebBrowserSession = true
-                });
-#endif
+                await DisplayAlert("Alert", "This is windows", "OK");
+            }
 
+            if (DeviceInfo.Platform == DevicePlatform.iOS) { }
             //WebAuthenticatorResult result = await WinUIEx.WebAuthenticator.AuthenticateAsync(authorizeUrl, callbackUri);
 
-            string accessToken = authResult?.AccessToken;
-            var expiresIn = authResult?.ExpiresIn;
-            _secureStorage.SetAuthToken(accessToken, expiresIn);
-            Init();
+            if (authResult != null) {
+                string accessToken = authResult?.AccessToken;
+                var expiresIn = authResult?.ExpiresIn;
+                _secureStorage.SetAuthToken(accessToken, expiresIn);
+                Init();
+            }
+            else {
+                await DisplayAlert("Alert", "Couldn't Authenticate", "OK");
+            }
         }
         catch (TaskCanceledException ex) {
-            // Use stopped auth
+            Debug.Write(ex.ToString());
         }
 
     }

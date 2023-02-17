@@ -1,4 +1,3 @@
-using Android.Widget;
 using AniListHelper.Infrastructure;
 using AniListHelper.Models;
 using AniListNet;
@@ -45,6 +44,12 @@ public partial class SearchPage : ContentPage {
                                  $"Please wait while we get things ready for you.\n" +
             $"Initializing..";
         }
+        var userEntry = await _aniclient.GetUserEntriesAsync(userId, new MediaEntryFilter {
+            Type = MediaType.Anime
+        }, new AniPaginationOptions(1, 1));
+
+        // TODO: Update this when new Method Arrives that gets all the collections. 
+        var mediaListCollection = await _aniclient.GetUserEntryCollectionAsync(userId, MediaType.Anime, new AniPaginationOptions(1, userEntry.TotalCount));
         var rowCount = await _db.MediaEntries.CountAsync();
         if (rowCount == 0) {
 
@@ -74,7 +79,7 @@ public partial class SearchPage : ContentPage {
                 var mediaList = mediaEntries.Select(x => new MediaEntryModel {
                     Name = $"{x.Media.Title.PreferredTitle}",
                     OtherNames = string.Join(",", new string[] { x.Media.Title.EnglishTitle, x.Media.Title.RomajiTitle, x.Media.Title.NativeTitle }.Where(x => !string.IsNullOrEmpty(x)).ToList()),
-                    Status = x.Media.Status.ToString(),
+                    Status = x.Status.ToString(),
                 });
                 await _db.MediaEntries.AddRangeAsync(mediaList);
                 await _db.SaveChangesAsync();
@@ -95,10 +100,6 @@ public partial class SearchPage : ContentPage {
         //    return base.OnBackButtonPressed();
         //}
         return _aniclient.IsAuthenticated ? false : true;
-    }
-
-    private async void searchEntry_TextChanged(object sender, TextChangedEventArgs e) {
-
     }
 
     private async void searchBtn_Clicked(object sender, EventArgs e) {
@@ -165,7 +166,7 @@ public partial class SearchPage : ContentPage {
             var data = searchResu.Data.Select(x => new MediaEntryModel {
                 Name = $"{x.Title.PreferredTitle}",
                 OtherNames = string.Join(",", new string[] { x.Title.EnglishTitle, x.Title.RomajiTitle, x.Title.NativeTitle }.Where(x => !string.IsNullOrEmpty(x)).ToList()),
-                Status = x.Status.ToString(),
+                Status = "",
             }).ToList();
             _data = data;
             data.ForEach(i => MediaEntries.Add(i));
