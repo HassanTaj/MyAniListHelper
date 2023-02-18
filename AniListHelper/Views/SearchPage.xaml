@@ -65,18 +65,18 @@
                                 <SwipeItem Text="Delete" IconImageSource="delete.png"  BackgroundColor="DarkRed" Invoked="OnDeleteSwipeItemInvoked"/>
                             </SwipeItems>
                         </SwipeView.RightItems>
-                        <FlexLayout Direction="Row" JustifyContent="SpaceEvenly" Wrap="Wrap" >
+                        <FlexLayout Direction="Row" JustifyContent="Start" AlignItems="Start">
                             <Border Margin="0,0,10,0">
                                 <Border.StrokeShape>
                                     <RoundRectangle CornerRadius="3,3,3,3" />
                                 </Border.StrokeShape>
-                                <Image FlexLayout.Grow="1" FlexLayout.Basis="40%"
+                                <Image FlexLayout.Grow="1" FlexLayout.Basis="30%"
                                Source="https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/bx151379-JxxgTgSViXZL.png"
                                Aspect="AspectFill"
                                HeightRequest="100"
                                WidthRequest="80" />
                             </Border>
-                            <StackLayout  Spacing="7" FlexLayout.Basis="60%">
+                            <StackLayout FlexLayout.Basis="70%" Spacing="7">
                                 <Label Text="{Binding Name}" FontAttributes="Bold" FontSize="Subtitle" LineBreakMode="TailTruncation"/>
                                 <Label  Text="{Binding Status}" FontAttributes="Bold" FontSize="Small"/>
                                 <Label Text="{Binding OtherNames}" FontSize="Caption"  FontAttributes="Italic" VerticalOptions="End" LineBreakMode="TailTruncation"/>

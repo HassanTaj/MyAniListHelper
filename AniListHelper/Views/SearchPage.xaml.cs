@@ -40,7 +40,7 @@ public partial class SearchPage : ContentPage {
         if (!string.IsNullOrEmpty(userstr)) {
             _user = JsonConvert.DeserializeObject<User>(userstr);
             userId = _user.Id;
-            progressLabel.Text = $"Welcome {_user.Name}\n" +
+            progressLabel.Text = $"Hey {_user.Name}\n" +
                                  $"Please wait while we get things ready for you.\n" +
             $"Initializing..";
         }
@@ -78,6 +78,7 @@ public partial class SearchPage : ContentPage {
             if (mediaEntries != null && mediaEntries.Count > 0) {
                 var mediaList = mediaEntries.Select(x => new MediaEntryModel {
                     Name = $"{x.Media.Title.PreferredTitle}",
+                    ImageUrl = x.Media.Cover.MediumImageUrl.ToString(),
                     OtherNames = string.Join(",", new string[] { x.Media.Title.EnglishTitle, x.Media.Title.RomajiTitle, x.Media.Title.NativeTitle }.Where(x => !string.IsNullOrEmpty(x)).ToList()),
                     Status = x.Status.ToString(),
                 });
