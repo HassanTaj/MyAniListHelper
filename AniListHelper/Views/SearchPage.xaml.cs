@@ -179,4 +179,12 @@ public partial class SearchPage : ContentPage {
         }
 
     }
+
+    private async void OnAddToListSwipeItemInvoked(object sender, EventArgs e) {
+
+    }
+
+    private async void OnDeleteSwipeItemInvoked(object sender, EventArgs e) {
+
+    }
 }

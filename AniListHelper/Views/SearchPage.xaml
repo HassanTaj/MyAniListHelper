@@ -5,6 +5,7 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:models="clr-namespace:AniListHelper.Models"
     NavigationPage.HasBackButton="false">
+    
     <ContentPage.Resources>
         <Style x:Key="btnStyle" TargetType="Button">
             <Setter Property="BackgroundColor" Value="#1f1f1f" />
@@ -13,6 +14,7 @@
             <Setter Property="CornerRadius" Value="0" />
         </Style>
     </ContentPage.Resources>
+    
     <FlexLayout
         Direction="Column"
         FlexLayout.Basis="Auto"
@@ -49,24 +51,63 @@
             ItemsSource="{Binding MediaEntries}"
             SelectionMode="Single"
             VerticalOptions="StartAndExpand">
+
             <CollectionView.ItemTemplate>
+
                 <DataTemplate x:DataType="models:MediaEntryModel">
-                    <StackLayout
-                        Padding="10"
-                        HorizontalOptions="FillAndExpand"
-                        Spacing="2"
-                        VerticalOptions="FillAndExpand">
-                        <Label Text="{Binding Name}" />
-                        <Label
-                            FontAttributes="Bold"
-                            FontSize="10"
-                            Text="{Binding Status}" />
-                        <Label FontSize="10" Text="{Binding OtherNames, StringFormat=({0})}" />
-                    </StackLayout>
+                    <SwipeView x:Name="itemsView" FlexLayout.Basis="45" HorizontalOptions="FillAndExpand" VerticalOptions="StartAndExpand">
+                        <SwipeView.LeftItems>
+                            <SwipeItems>
+                                <SwipeItem Text="Add to list" IconImageSource="favorite.png" BackgroundColor="LightGreen" Invoked="OnAddToListSwipeItemInvoked"/>
+                            </SwipeItems>
+                        </SwipeView.LeftItems>
+                        <SwipeView.RightItems>
+                            <SwipeItems>
+                                <SwipeItem Text="Delete" IconImageSource="delete.png" BackgroundColor="LightPink" Invoked="OnDeleteSwipeItemInvoked"/>
+                            </SwipeItems>
+                        </SwipeView.RightItems>
+                        <Grid Padding="10" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">
+                            <StackLayout Padding="10" HorizontalOptions="FillAndExpand" Spacing="2" VerticalOptions="FillAndExpand">
+                                <Label Text="{Binding Name}" />
+                                <Label Text="{Binding Status}" FontAttributes="Bold" FontSize="10" />
+                                <Label Text="{Binding OtherNames, StringFormat=({0})}" FontSize="10" />
+                            </StackLayout>
+                        </Grid>
+                    </SwipeView>
                 </DataTemplate>
+
             </CollectionView.ItemTemplate>
 
         </CollectionView>
+
+        <Border Stroke="#19B33"
+        StrokeThickness="1"
+        StrokeShape="RoundRectangle 0,0,0,0"
+        HorizontalOptions="Center"/>
+        <!--<SwipeView
+            x:Name="itemsView"
+            FlexLayout.Basis="45"
+            HorizontalOptions="FillAndExpand"
+            VerticalOptions="StartAndExpand">
+
+            <SwipeView.LeftItems>
+                <SwipeItems>
+                    <SwipeItem Text="Add to list" IconImageSource="favorite.png" BackgroundColor="LightGreen" Invoked="OnAddToListSwipeItemInvoked"/>
+                </SwipeItems>
+            </SwipeView.LeftItems>
+            <SwipeView.RightItems>
+                <SwipeItems>
+                    <SwipeItem Text="Delete" IconImageSource="delete.png" BackgroundColor="LightPink" Invoked="OnDeleteSwipeItemInvoked"/>
+                </SwipeItems>
+            </SwipeView.RightItems>
+
+            -->
+        <!-- Content -->
+        <!--
+            <Grid HeightRequest="60" BackgroundColor="#293332" Padding="10" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">
+                <Label Text="Swipe right" HorizontalOptions="Center" VerticalOptions="Center" />
+            </Grid>
+        </SwipeView>-->
 
         <VerticalStackLayout
             x:Name="lodingView"
