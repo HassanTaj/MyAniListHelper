@@ -33,7 +33,7 @@
 
 	<ItemGroup>
 		<!-- App Icon -->
-		<MauiIcon Include="Resources\AppIcon\appiconfg.svg" BaseSize="90,90"/>
+		<MauiIcon Include="Resources\AppIcon\appiconfg.svg" BaseSize="90,90" />
 
 		<!-- Splash Screen -->
 		<MauiSplashScreen Include="Resources\Splash\splash.svg" Color="transparent" BaseSize="128,128" />
@@ -47,6 +47,12 @@
 
 		<!-- Raw Assets (also remove the "Resources\Raw" prefix) -->
 		<MauiAsset Include="Resources\Raw\**" LogicalName="%(RecursiveDir)%(Filename)%(Extension)" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <None Remove="Resources\Images\bin.png" />
+	  <None Remove="Resources\Images\delete.png" />
+	  <None Remove="Resources\Images\sync.png" />
 	</ItemGroup>
 
 	<ItemGroup>
