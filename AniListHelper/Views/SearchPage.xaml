@@ -44,7 +44,8 @@
         </VerticalStackLayout>
 
         <CollectionView
-            x:Name="itemsView"
+            x:Name="itemsView" 
+            SelectionChanged="AnimeSelectionEvent"
             FlexLayout.Basis="45"
             HorizontalOptions="FillAndExpand"
             ItemSizingStrategy="MeasureAllItems"
@@ -56,7 +57,7 @@
                 <DataTemplate x:DataType="models:MediaEntryModel">
                     <SwipeView x:Name="itemsView" FlexLayout.Basis="45" HorizontalOptions="FillAndExpand" VerticalOptions="StartAndExpand">
                         <SwipeView.LeftItems>
-                            <SwipeItems SwipeBehaviorOnInvoked="Close" Mode="Execute">
+                            <SwipeItems>
                                 <SwipeItem Text="Add to list" IconImageSource="sync.png" BackgroundColor="LightGreen" Invoked="OnAddToListSwipeItemInvoked"/>
                             </SwipeItems>
                         </SwipeView.LeftItems>

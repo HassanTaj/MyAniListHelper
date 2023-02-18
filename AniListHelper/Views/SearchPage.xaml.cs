@@ -187,4 +187,11 @@ public partial class SearchPage : ContentPage {
     private async void OnDeleteSwipeItemInvoked(object sender, EventArgs e) {
 
     }
+
+    private async void AnimeSelectionEvent(object sender, SelectionChangedEventArgs e) {
+        var selectedItem = e.CurrentSelection.FirstOrDefault() as MediaEntryModel;
+        if (selectedItem == null) return;
+        await Navigation.PushAsync(new DetailPage(selectedItem));
+        ((CollectionView)sender).SelectedItem = null;
+    }
 }
