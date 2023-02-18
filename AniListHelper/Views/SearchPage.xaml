@@ -22,7 +22,7 @@
         Wrap="NoWrap">
 
         <VerticalStackLayout
-            Margin="5"
+            Margin="0"
             FlexLayout.Basis="65"
             HorizontalOptions="FillAndExpand"
             VerticalOptions="StartAndExpand">

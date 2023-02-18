@@ -3,12 +3,27 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="AniListHelper.Views.DetailPage"
              Title="Detail Page">
+    <!--<ContentPage.ToolbarItems>
+        <ToolbarItem Text="Back" Clicked="Back_Tapped"/>
+    </ContentPage.ToolbarItems>-->
     <ScrollView>
         <StackLayout>
+            <StackLayout>
+                <!--<Button Text="Back" Clicked="Back_Tapped" BackgroundColor="DarkSlateGray" TextColor="White"/>-->
+                <ImageButton Source="back100.png" Clicked="Back_Tapped"
+                             BackgroundColor="Transparent"
+                             WidthRequest="30"
+                             HeightRequest="30"
+                             HorizontalOptions="Start"
+                             VerticalOptions="StartAndExpand"/>
+                <!--<Label Text="My Page Title"/>-->
+            </StackLayout>
             <Image x:Name="LblImage" MaximumHeightRequest="350" Aspect="AspectFill"></Image>
             <StackLayout Padding="10,10,10,0">
                 <Label x:Name="LblName" FontSize="Default"/>
                 <Label x:Name="LblStatus" FontSize="Small" FontAttributes="Bold"/>
+                <!--<Label x:Name="LblStart" FontSize="Small" FontAttributes="Bold"/>
+                <Label x:Name="LblEnd" FontSize="Small" FontAttributes="Bold"/>-->
                 <!--<Label x:Name="LblOtherNames" FontSize="10"></Label>-->
                 <Grid Margin="10,15,20,20" HorizontalOptions="Start" RowDefinitions="Auto,Auto,Auto" ColumnDefinitions="Auto,Auto,Auto">
                     <Label x:Name="LblDescription" FontSize="10"/>
