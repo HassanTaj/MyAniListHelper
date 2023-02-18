@@ -15,7 +15,7 @@
 		<ApplicationTitle>AniListHelper</ApplicationTitle>
 
 		<!-- App Identifier -->
-		<ApplicationId>com.companyname.anilisthelper1</ApplicationId>
+		<ApplicationId>com.companyname.anilisthelper</ApplicationId>
 		<ApplicationIdGuid>CA13B30D-9118-4F92-8868-ADDF8EDC6797</ApplicationIdGuid>
 
 		<!-- Versions -->
