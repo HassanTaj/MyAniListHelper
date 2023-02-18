@@ -3,9 +3,8 @@
     x:Class="AniListHelper.Views.SearchPage"
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-    xmlns:models="clr-namespace:AniListHelper.Models"
-    NavigationPage.HasBackButton="false">
-    
+    xmlns:models="clr-namespace:AniListHelper.Models">
+
     <ContentPage.Resources>
         <Style x:Key="btnStyle" TargetType="Button">
             <Setter Property="BackgroundColor" Value="#1f1f1f" />
@@ -14,7 +13,7 @@
             <Setter Property="CornerRadius" Value="0" />
         </Style>
     </ContentPage.Resources>
-    
+
     <FlexLayout
         Direction="Column"
         FlexLayout.Basis="Auto"
@@ -66,22 +65,22 @@
                                 <SwipeItem Text="Delete" IconImageSource="delete.png"  BackgroundColor="DarkRed" Invoked="OnDeleteSwipeItemInvoked"/>
                             </SwipeItems>
                         </SwipeView.RightItems>
-                        <Grid  RowDefinitions="Auto,Auto,Auto" ColumnDefinitions="Auto,Auto,Auto" >
+                        <Grid  RowDefinitions="Auto,Auto,Auto" ColumnDefinitions="Auto,Auto,Auto" Padding="10,0,10,2" >
                             <Border Margin="0,0,10,0">
                                 <Border.StrokeShape>
                                     <RoundRectangle CornerRadius="3,3,3,3" />
                                 </Border.StrokeShape>
                                 <Image Grid.RowSpan="2" 
-                               Source="https://picsum.photos/seed/picsum/200/300"
+                               Source="https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/bx151379-JxxgTgSViXZL.png"
                                Aspect="AspectFill"
                                HeightRequest="100"
                                WidthRequest="80" />
                             </Border>
 
-                            <StackLayout Grid.Row="0" Grid.Column="1" Spacing="10">
-                                <Label Grid.Column="1" Text="{Binding Name}" FontAttributes="Bold" LineBreakMode="WordWrap"/>
-                                <Label Grid.Row="1" Grid.Column="1" Text="{Binding Status}" FontAttributes="Bold"/>
-                                <Label Grid.Row="2" Grid.Column="1" Text="{Binding OtherNames}" FontAttributes="Italic" VerticalOptions="End" LineBreakMode="TailTruncation"/>
+                            <StackLayout Grid.Row="0" Grid.Column="1" Spacing="7">
+                                <Label Grid.Column="1" Text="{Binding Name}" FontAttributes="Bold" FontSize="Subtitle" LineBreakMode="WordWrap"/>
+                                <Label Grid.Row="1" Grid.Column="1" Text="{Binding Status}" FontAttributes="Bold" FontSize="Small"/>
+                                <Label Grid.Row="2" Grid.Column="1" Text="{Binding OtherNames}" FontSize="Caption"  FontAttributes="Italic" VerticalOptions="End" LineBreakMode="TailTruncation"/>
                             </StackLayout>
                         </Grid>
                     </SwipeView>
@@ -89,6 +88,7 @@
             </CollectionView.ItemTemplate>
 
         </CollectionView>
+
         <VerticalStackLayout
             x:Name="lodingView"
             FlexLayout.Basis="Auto"
