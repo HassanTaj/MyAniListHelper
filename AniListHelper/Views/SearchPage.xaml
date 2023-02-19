@@ -14,12 +14,96 @@
         </Style>
     </ContentPage.Resources>
 
+    <Grid>
+        <SwipeView  FlexLayout.Basis="45" 
+                   HorizontalOptions="FillAndExpand" VerticalOptions="StartAndExpand">
+            <SwipeView.LeftItems>
+                <SwipeItems>
+                    <SwipeItem Text="Add to list" IconImageSource="sync.png" 
+                               BackgroundColor="LightGreen" Invoked="Button_Clicked"
+                               Clicked="Button_Clicked"/>
+
+                </SwipeItems>
+            </SwipeView.LeftItems>
+            <Grid
+            x:Name="MenuContainer"
+            IgnoreSafeArea="{OnPlatform Android=True, iOS=Flase}">
+
+                <Grid.Background>
+                    <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                        <GradientStop Color="#666666" Offset="0.0" />
+                        <GradientStop Color="#000000" Offset="1.0"/>
+                    </LinearGradientBrush>
+                </Grid.Background>
+
+                <Grid.GestureRecognizers>
+                    <TapGestureRecognizer Tapped="GridArea_Tapped" />
+                </Grid.GestureRecognizers>
+
+                <VerticalStackLayout
+                Margin="0,52,24,0"
+                HorizontalOptions="End"
+                Spacing="20">
+
+                    <Label                
+                    Text="Watching"
+                    HorizontalOptions="End" />
+                    <Label                
+                    Text="Completed"
+                    HorizontalOptions="End" />
+                    <Label                
+                    Text="Plaining"
+                    HorizontalOptions="End" />
+                    <!--<Label                
+                    Text="MENU"
+                    Style="{StaticResource PageHeaderStyle}"
+                    HorizontalOptions="End"/>
+
+                <Label                
+                    Text="Option 1 (with icon)"
+                    Style="{StaticResource PageHeaderSubtitleStyle}"
+                    HorizontalOptions="End" />
+
+                <Label                
+                    Text="Option 2 (with icon)"
+                    Style="{StaticResource PageHeaderSubtitleStyle}"
+                    HorizontalOptions="End" />
+
+                <Label                
+                    Text="Option 3 (with icon)"
+                    Style="{StaticResource PageHeaderSubtitleStyle}"
+                    HorizontalOptions="End" />
+
+                <Label                
+                    Text="Option 4 (with icon)"
+                    Style="{StaticResource PageHeaderSubtitleStyle}"
+                    HorizontalOptions="End" />
+
+                <Label                
+                    Text="Option 5 (with icon)"
+                    Style="{StaticResource PageHeaderSubtitleStyle}"
+                    HorizontalOptions="End" />
+
+                <Label                
+                    Text="Option 6 (with icon)"
+                    Style="{StaticResource PageHeaderSubtitleStyle}"
+                    HorizontalOptions="End" />-->
+
+                </VerticalStackLayout>
+            </Grid>
+
+        </SwipeView>
+
+        <!--Main Content-->
     <FlexLayout
+        x:Name="SearchContent"
         Direction="Column"
         FlexLayout.Basis="Auto"
         Position="Relative"
         VerticalOptions="FillAndExpand"
-        Wrap="NoWrap">
+        Wrap="NoWrap"
+        Margin="0">
+        <Button Text="Menu" Clicked="Button_Clicked" VerticalOptions="Start" HorizontalOptions="Start"/>
 
         <VerticalStackLayout
             Margin="0"
@@ -108,7 +192,7 @@
                 Clicked="searchFromAniList_Clicked"
                 IsVisible="False"
                 Style="{StaticResource btnStyle}"
-                Text="Search on anylist and add" />
+                Text="Search on anilist and add" />
 
             <ActivityIndicator
                 x:Name="activityIndicator"
@@ -119,5 +203,6 @@
         </VerticalStackLayout>
 
     </FlexLayout>
+    </Grid>
 
 </ContentPage>
