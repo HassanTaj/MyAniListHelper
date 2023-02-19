@@ -10,5 +10,14 @@
                 <ResourceDictionary Source="Resources/Styles/Styles.xaml" />
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
+        <!--<Style TargetType="Label" x:Key="BaseMediumLabeltyle">
+            <Setter Property="LineBreakMode" Value="TailTruncation" />
+            <Setter Property="FontAutoScalingEnabled" Value="False" />
+            <Setter Property="FontFamily" Value="MediumFont" />
+        </Style>
+        <Style TargetType="Label" x:Key="PageHeaderSubtitleStyle" BasedOn="{StaticResource BaseMediumLabeltyle}">
+            <Setter Property="FontSize" Value="14" />
+            <Setter Property="TextColor" Value="{StaticResource LightTextColor}" />
+        </Style>-->
     </Application.Resources>
 </Application>
