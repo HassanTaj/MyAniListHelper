@@ -27,7 +27,7 @@
             </SwipeView.LeftItems>
             <Grid
             x:Name="MenuContainer"
-            IgnoreSafeArea="{OnPlatform Android=True, iOS=Flase}">
+            IgnoreSafeArea="{OnPlatform Android=True, iOS=False}">
 
                 <Grid.Background>
                     <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">

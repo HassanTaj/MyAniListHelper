@@ -14,7 +14,8 @@ using User = AniListNet.Objects.User;
 
 namespace AniListHelper.Views;
 
-public partial class SearchPage : ContentPage {
+public partial class SearchPage : ContentPage
+{
     private readonly SecureStorageProcessor _secureStorage;
     private readonly AniClient _aniclient;
     //private readonly SQLiteAsyncConnection _db;
@@ -24,7 +25,8 @@ public partial class SearchPage : ContentPage {
     private const uint AnimationDuration = 100u;
     public ObservableCollection<MediaEntryModel> MediaEntries { get; set; }
 
-    public SearchPage(SecureStorageProcessor secureStorage, AniClient aniclient, AppDbContext conn) {
+    public SearchPage(SecureStorageProcessor secureStorage, AniClient aniclient, AppDbContext conn)
+    {
         InitializeComponent();
         _secureStorage = secureStorage;
         _aniclient = aniclient;
@@ -34,49 +36,60 @@ public partial class SearchPage : ContentPage {
         BindingContext = this;
     }
 
-    private async void Init() {
+    private async void Init()
+    {
         var userstr = Preferences.Get(Constants.USER, null);
         _user = null;
         int userId = 0;
-        if (!string.IsNullOrEmpty(userstr)) {
+        if (!string.IsNullOrEmpty(userstr))
+        {
             _user = JsonConvert.DeserializeObject<User>(userstr);
             userId = _user.Id;
             progressLabel.Text = $"Hey {_user.Name}\n" +
             $"Initializing take some time..";
         }
-        var userEntry = await _aniclient.GetUserEntriesAsync(userId, new MediaEntryFilter {
+        var userEntry = await _aniclient.GetUserEntriesAsync(userId, new MediaEntryFilter
+        {
             Type = MediaType.Anime
         }, new AniPaginationOptions(1, 1));
 
         // TODO: Update this when new Method Arrives that gets all the collections. 
         var mediaListCollection = await _aniclient.GetUserListCollectionAsync(userId, MediaType.Anime);
         var rowCount = await _db.MediaEntries.CountAsync();
-        if (rowCount == 0) {
+        if (rowCount == 0)
+        {
 
             progressLabel.Text = "Getting Data..";
-            var userEntries = await _aniclient.GetUserEntriesAsync(userId, new MediaEntryFilter {
+            var userEntries = await _aniclient.GetUserEntriesAsync(userId, new MediaEntryFilter
+            {
                 Type = MediaType.Anime
             }, new AniPaginationOptions(1, 1));
 
             var mediaEntries = new List<MediaEntry>();
             var pageindex = 1;
             var size = 50;
-            while (mediaEntries.Count != userEntries.TotalCount) {
-                var alluserEntries = await _aniclient.GetUserEntriesAsync(userId, new MediaEntryFilter {
+            while (mediaEntries.Count != userEntries.TotalCount)
+            {
+                var alluserEntries = await _aniclient.GetUserEntriesAsync(userId, new MediaEntryFilter
+                {
                     Type = MediaType.Anime
                 }, new AniPaginationOptions(pageindex, size));
 
                 mediaEntries.AddRange(alluserEntries.Data);
-                if (pageindex != userEntries.LastPageIndex && alluserEntries.HasNextPage == true) {
+                if (pageindex != userEntries.LastPageIndex && alluserEntries.HasNextPage == true)
+                {
                     pageindex++;
                 }
-                else {
+                else
+                {
                     break;
                 }
             }
             progressLabel.Text = "Syncing Data...";
-            if (mediaEntries != null && mediaEntries.Count > 0) {
-                var mediaList = mediaEntries.Select(x => new MediaEntryModel {
+            if (mediaEntries != null && mediaEntries.Count > 0)
+            {
+                var mediaList = mediaEntries.Select(x => new MediaEntryModel
+                {
                     Name = $"{x.Media.Title.PreferredTitle}",
                     //ImageUrl = x.Media.Cover.MediumImageUrl.ToString(),
                     OtherNames = string.Join(",", new string[] { x.Media.Title.EnglishTitle, x.Media.Title.RomajiTitle, x.Media.Title.NativeTitle }.Where(x => !string.IsNullOrEmpty(x)).ToList()),
@@ -97,7 +110,8 @@ public partial class SearchPage : ContentPage {
         //animeListview.SetBinding(ItemsView.HeaderProperty, ".");
     }
 
-    protected override bool OnBackButtonPressed() {
+    protected override bool OnBackButtonPressed()
+    {
         //if (!_aniclient.IsAuthenticated) {
 
         //    return base.OnBackButtonPressed();
@@ -105,10 +119,12 @@ public partial class SearchPage : ContentPage {
         return _aniclient.IsAuthenticated ? false : true;
     }
 
-    private async void searchBtn_Clicked(object sender, EventArgs e) {
+    private async void searchBtn_Clicked(object sender, EventArgs e)
+    {
         var searchTerm = searchEntry.Text;
 
-        if (!string.IsNullOrEmpty(searchTerm)) {
+        if (!string.IsNullOrEmpty(searchTerm))
+        {
             var queryText = $"%{searchTerm}%";
             MediaEntries.Clear();
             itemsView.IsVisible = false;
@@ -125,12 +141,14 @@ public partial class SearchPage : ContentPage {
             data.ForEach(i => MediaEntries.Add(i));
             //var data = _data.Where(x => x.Name.Contains(searchTerm, StringComparison.OrdinalIgnoreCase)).ToList();
             //data.ForEach(i => data.Add(i));
-            if (data.Count == 0) {
+            if (data.Count == 0)
+            {
                 progressLabel.Text = "No Records Found";
                 activityIndicator.IsVisible = false;
                 searchFromAniList.IsVisible = true;
             }
-            else {
+            else
+            {
                 itemsView.IsVisible = true;
                 activityIndicator.IsVisible = false;
                 activityIndicator.IsRunning = false;
@@ -139,7 +157,8 @@ public partial class SearchPage : ContentPage {
 
             }
         }
-        else {
+        else
+        {
             MediaEntries.Clear();
             progressLabel.Text = "No Records Found";
             lodingView.IsVisible = true;
@@ -152,8 +171,10 @@ public partial class SearchPage : ContentPage {
         //lodingView.IsVisible = false;
     }
 
-    private async void searchFromAniList_Clicked(object sender, EventArgs e) {
-        var searchResu = await _aniclient.SearchMediaAsync(new SearchMediaFilter {
+    private async void searchFromAniList_Clicked(object sender, EventArgs e)
+    {
+        var searchResu = await _aniclient.SearchMediaAsync(new SearchMediaFilter
+        {
             Query = searchEntry.Text,
             Type = MediaType.Anime,
             Sort = MediaSort.Popularity,
@@ -164,9 +185,11 @@ public partial class SearchPage : ContentPage {
                   { MediaFormat.TVShort, false } // set to not show TV shorts
                }
         });
-        if (searchResu != null) {
+        if (searchResu != null)
+        {
             MediaEntries.Clear();
-            var data = searchResu.Data.Select(x => new MediaEntryModel {
+            var data = searchResu.Data.Select(x => new MediaEntryModel
+            {
                 Name = $"{x.Title.PreferredTitle}",
                 OtherNames = string.Join(",", new string[] { x.Title.EnglishTitle, x.Title.RomajiTitle, x.Title.NativeTitle }.Where(x => !string.IsNullOrEmpty(x)).ToList()),
                 Status = "",
@@ -180,36 +203,79 @@ public partial class SearchPage : ContentPage {
             lodingView.IsVisible = false;
             searchFromAniList.IsVisible = false;
         }
+    }
+
+    private async void OnAddToListSwipeItemInvoked(object sender, EventArgs e)
+    {
 
     }
 
-    private async void OnAddToListSwipeItemInvoked(object sender, EventArgs e) {
+    private async void OnDeleteSwipeItemInvoked(object sender, EventArgs e)
+    {
 
     }
 
-    private async void OnDeleteSwipeItemInvoked(object sender, EventArgs e) {
+    private async void AnimeSyncAsync(MediaEntryModel item)
+    {
+        var mediaId = 0;
+        var name = item.Name;
+        var otherNames = item.OtherNames;
+        var status = item.Status;
+        var alertDisplayResult = "Anime added to you Anilist Anime list";
 
+        var result = await _aniclient.SearchMediaAsync(item.Name);
+        if (result != null)
+        {
+            mediaId = result.Data[0].Id;
+        }
+
+        var res = await _aniclient.SaveMediaEntryAsync(mediaId, new MediaEntryMutation
+        {
+            Status = MediaEntryStatus.Planning,
+            Progress = 0,
+            Score = 0,
+        });
+
+        var isAlreadyInDB = _db.MediaEntries.FirstOrDefault(x => x.Name == name) == null ? false : true;
+        if (!isAlreadyInDB)
+        {
+            await _db.MediaEntries.AddAsync(new MediaEntryModel
+            {
+                Name = name,
+                OtherNames = otherNames,
+                Status = status,
+            });
+            await _db.SaveChangesAsync();
+            alertDisplayResult = "Anime added to you Anilist Anime list & AnilistHelper";
+        }
+        await DisplayAlert("AnimeAddAlert", alertDisplayResult, "Close");
     }
 
-    private async void AnimeSelectionEvent(object sender, SelectionChangedEventArgs e) {
+    private async void AnimeSelectionEvent(object sender, SelectionChangedEventArgs e)
+    {
         var selectedItem = e.CurrentSelection.FirstOrDefault() as MediaEntryModel;
         if (selectedItem == null) return;
-        await Navigation.PushAsync(new DetailPage(selectedItem));
-        ((CollectionView)sender).SelectedItem = null;
+        //await Navigation.PushAsync(new DetailPage(selectedItem));
+        //((CollectionView)sender).SelectedItem = null;
+
+        AnimeSyncAsync(selectedItem);
     }
 
-    async void GridArea_Tapped(System.Object sender, System.EventArgs e) {
+    async void GridArea_Tapped(System.Object sender, System.EventArgs e)
+    {
         await CloseMenu();
     }
 
-    private async Task CloseMenu() {
+    private async Task CloseMenu()
+    {
         //Close the menu and bring back back the main content
         _ = SearchContent.FadeTo(1, AnimationDuration);
         _ = SearchContent.ScaleTo(1, AnimationDuration);
         await SearchContent.TranslateTo(0, 0, AnimationDuration, Easing.CubicIn);
     }
 
-    private async void Button_Clicked(object sender, EventArgs e) {
+    private async void Button_Clicked(object sender, EventArgs e)
+    {
         // Reveal our menu and move the main content out of the view
         _ = SearchContent.TranslateTo(this.Width * 0.5, this.Height * 0, AnimationDuration, Easing.Default);
         await SearchContent.ScaleTo(1, AnimationDuration);
