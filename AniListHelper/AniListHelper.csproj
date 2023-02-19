@@ -53,6 +53,7 @@
 	  <None Remove="Resources\Images\back.png" />
 	  <None Remove="Resources\Images\bin.png" />
 	  <None Remove="Resources\Images\delete.png" />
+	  <None Remove="Resources\Images\imgback.png" />
 	  <None Remove="Resources\Images\sync.png" />
 	</ItemGroup>
 

@@ -21,6 +21,7 @@ public partial class SearchPage : ContentPage {
     private readonly AppDbContext _db;
     private List<MediaEntryModel> _data = new List<MediaEntryModel>();
     private User _user;
+    private const uint AnimationDuration = 100u;
     public ObservableCollection<MediaEntryModel> MediaEntries { get; set; }
 
     public SearchPage(SecureStorageProcessor secureStorage, AniClient aniclient, AppDbContext conn) {
@@ -41,8 +42,8 @@ public partial class SearchPage : ContentPage {
             _user = JsonConvert.DeserializeObject<User>(userstr);
             userId = _user.Id;
             progressLabel.Text = $"Hey {_user.Name}\n" +
-                                 $"Pain Hosla...\n" +
-            $"Initializing take some time..";
+                                 $"Pain be patient..\n" +
+            $"Initialization takes some time..";
         }
         var userEntry = await _aniclient.GetUserEntriesAsync(userId, new MediaEntryFilter {
             Type = MediaType.Anime
@@ -196,5 +197,23 @@ public partial class SearchPage : ContentPage {
         if (selectedItem == null) return;
         await Navigation.PushAsync(new DetailPage(selectedItem));
         ((CollectionView)sender).SelectedItem = null;
+    }
+
+    async void GridArea_Tapped(System.Object sender, System.EventArgs e) {
+        await CloseMenu();
+    }
+
+    private async Task CloseMenu() {
+        //Close the menu and bring back back the main content
+        _ = SearchContent.FadeTo(1, AnimationDuration);
+        _ = SearchContent.ScaleTo(1, AnimationDuration);
+        await SearchContent.TranslateTo(0, 0, AnimationDuration, Easing.CubicIn);
+    }
+
+    private async void Button_Clicked(object sender, EventArgs e) {
+        // Reveal our menu and move the main content out of the view
+        _ = SearchContent.TranslateTo(this.Width * 0.5, this.Height * 0, AnimationDuration, Easing.Default);
+        await SearchContent.ScaleTo(1, AnimationDuration);
+        _ = SearchContent.FadeTo(0.5, AnimationDuration);
     }
 }
