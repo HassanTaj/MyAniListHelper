@@ -226,7 +226,7 @@ public partial class SearchPage : ContentPage
         var name = item.Name;
         var otherNames = item.OtherNames;
         var status = item.Status;
-        var toastText = "Anime added to you Anilist Anime list";
+        var toastText = "";
 
         var result = await _aniclient.SearchMediaAsync(item.Name);
 
@@ -235,16 +235,16 @@ public partial class SearchPage : ContentPage
             mediaId = result.Data[0].Id;
         }
 
-        var res = await _aniclient.SaveMediaEntryAsync(mediaId, new MediaEntryMutation
-        {
-            Status = MediaEntryStatus.Planning,
-            Progress = 0,
-            Score = 0,
-        });
-
         var isAlreadyInDB = _db.MediaEntries.FirstOrDefault(x => x.Name == name) == null ? false : true;
         if (!isAlreadyInDB)
         {
+            var res = await _aniclient.SaveMediaEntryAsync(mediaId, new MediaEntryMutation
+            {
+                Status = MediaEntryStatus.Planning,
+                Progress = 0,
+                Score = 0,
+            });
+
             await _db.MediaEntries.AddAsync(new MediaEntryModel
             {
                 Name = name,
@@ -253,10 +253,10 @@ public partial class SearchPage : ContentPage
             });
             await _db.SaveChangesAsync();
             toastText = "Anime added to you Anilist Anime list & AnilistHelper";
-        }
 
-        var toast = Toast.Make(toastText, ToastDuration.Long);
-        await toast.Show(cancellationTokenSource.Token);
+            var toast = Toast.Make(toastText, ToastDuration.Long);
+            await toast.Show(cancellationTokenSource.Token);
+        }
     }
 
     private async void AnimeSelectionEvent(object sender, SelectionChangedEventArgs e)
