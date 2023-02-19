@@ -11,6 +11,9 @@ using SQLite;
 using System.Collections.ObjectModel;
 using System.Linq;
 using User = AniListNet.Objects.User;
+using CommunityToolkit.Maui.Alerts;
+using CommunityToolkit.Maui.Core;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace AniListHelper.Views;
 
@@ -217,13 +220,16 @@ public partial class SearchPage : ContentPage
 
     private async void AnimeSyncAsync(MediaEntryModel item)
     {
+        CancellationTokenSource cancellationTokenSource = new CancellationTokenSource();
+
         var mediaId = 0;
         var name = item.Name;
         var otherNames = item.OtherNames;
         var status = item.Status;
-        var alertDisplayResult = "Anime added to you Anilist Anime list";
+        var toastText = "Anime added to you Anilist Anime list";
 
         var result = await _aniclient.SearchMediaAsync(item.Name);
+
         if (result != null)
         {
             mediaId = result.Data[0].Id;
@@ -246,9 +252,11 @@ public partial class SearchPage : ContentPage
                 Status = status,
             });
             await _db.SaveChangesAsync();
-            alertDisplayResult = "Anime added to you Anilist Anime list & AnilistHelper";
+            toastText = "Anime added to you Anilist Anime list & AnilistHelper";
         }
-        await DisplayAlert("AnimeAddAlert", alertDisplayResult, "Close");
+
+        var toast = Toast.Make(toastText, ToastDuration.Long);
+        await toast.Show(cancellationTokenSource.Token);
     }
 
     private async void AnimeSelectionEvent(object sender, SelectionChangedEventArgs e)
