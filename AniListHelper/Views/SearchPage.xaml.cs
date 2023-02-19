@@ -41,7 +41,6 @@ public partial class SearchPage : ContentPage {
             _user = JsonConvert.DeserializeObject<User>(userstr);
             userId = _user.Id;
             progressLabel.Text = $"Hey {_user.Name}\n" +
-                                 $"Pain Hosla...\n" +
             $"Initializing take some time..";
         }
         var userEntry = await _aniclient.GetUserEntriesAsync(userId, new MediaEntryFilter {
@@ -49,7 +48,7 @@ public partial class SearchPage : ContentPage {
         }, new AniPaginationOptions(1, 1));
 
         // TODO: Update this when new Method Arrives that gets all the collections. 
-        var mediaListCollection = await _aniclient.GetUserEntryCollectionAsync(userId, MediaType.Anime, new AniPaginationOptions(1, userEntry.TotalCount));
+        var mediaListCollection = await _aniclient.GetUserListCollectionAsync(userId, MediaType.Anime);
         var rowCount = await _db.MediaEntries.CountAsync();
         if (rowCount == 0) {
 
