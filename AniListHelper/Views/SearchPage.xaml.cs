@@ -236,38 +236,38 @@ public partial class SearchPage : ContentPage
             mediaId = result.Data[0].Id;
         }
 
-        var isAlreadyInDB = _db.MediaEntries.FirstOrDefault(x => x.Name == name) == null ? false : true;
-        if (!isAlreadyInDB)
+        MediaEntryStatus animeStatus = MediaEntryStatus.Planning;
+        string animeStatusAction = await DisplayActionSheet("", "Cancel", "Ok", "Planning", "Paused", "Repeating", "Current", "Dropped");
+
+        switch (animeStatusAction)
         {
-            MediaEntryStatus animeStatus = MediaEntryStatus.Planning;
-            string animeStatusAction = await DisplayActionSheet("", "Cancel", "Ok", "Planning", "Paused", "Repeating", "Current", "Dropped");
+            case "Planning":
+                animeStatus = MediaEntryStatus.Planning;
+                break;
 
-            switch(animeStatusAction)
-            {
-                case "Planning":
-                    animeStatus = MediaEntryStatus.Planning;
-                    break;
+            case "Paused":
+                animeStatus = MediaEntryStatus.Paused;
+                break;
 
-                case "Paused":
-                    animeStatus = MediaEntryStatus.Paused;
-                    break;
+            case "Repeating":
+                animeStatus = MediaEntryStatus.Repeating;
+                break;
 
-                case "Repeating":
-                    animeStatus = MediaEntryStatus.Repeating;
-                    break;
+            case "Current":
+                animeStatus = MediaEntryStatus.Current;
+                break;
 
-                case "Current":
-                    animeStatus = MediaEntryStatus.Current;
-                    break;
+            case "Dropped":
+                animeStatus = MediaEntryStatus.Dropped;
+                break;
 
-                case "Dropped":
-                    animeStatus = MediaEntryStatus.Dropped;
-                    break;
+            default:
+                break;
+        }
 
-                default:
-                    break;
-            }
-
+        var isAlreadyInDB = _db.MediaEntries.FirstOrDefault(x => x.Name == name) == null ? false : true;
+        if (!isAlreadyInDB && animeStatus.ToString() != "Dropped")
+        {
             if(animeStatus.ToString() == "Current")
             {
                 episodeNo = await DisplayPromptAsync("", "Episode: ");
@@ -287,15 +287,18 @@ public partial class SearchPage : ContentPage
                 });
             }
 
-            await _db.MediaEntries.AddAsync(new MediaEntryModel
+            if (animeStatus.ToString() != "Dropped")
             {
-                Name = name,
-                OtherNames = otherNames,
-                Status = status,
-            });
-            await _db.SaveChangesAsync();
-            toastText = flag == 1 ? $"Watched episode {episodeNo} of {name}" : "Anime added to you Anilist Anime list & AnilistHelper";
-
+                await _db.MediaEntries.AddAsync(new MediaEntryModel
+                {
+                    Name = name,
+                    OtherNames = otherNames,
+                    Status = status,
+                });
+                await _db.SaveChangesAsync();
+                toastText = flag == 1 ? $"Watched episode {episodeNo} of {name}" : "Anime added to you Anilist Anime list & AnilistHelper";
+            }
+            else toastText = $"Dropped {name}";
             var toast = Toast.Make(toastText, ToastDuration.Long);
             await toast.Show(cancellationTokenSource.Token);
         }
