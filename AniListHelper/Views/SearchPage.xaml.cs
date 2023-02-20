@@ -221,12 +221,13 @@ public partial class SearchPage : ContentPage
     private async void AnimeSyncAsync(MediaEntryModel item)
     {
         CancellationTokenSource cancellationTokenSource = new CancellationTokenSource();
-
+        var flag = 0;
         var mediaId = 0;
         var name = item.Name;
         var otherNames = item.OtherNames;
         var status = item.Status;
         var toastText = "";
+        string episodeNo = "";
 
         var result = await _aniclient.SearchMediaAsync(item.Name);
 
@@ -238,12 +239,53 @@ public partial class SearchPage : ContentPage
         var isAlreadyInDB = _db.MediaEntries.FirstOrDefault(x => x.Name == name) == null ? false : true;
         if (!isAlreadyInDB)
         {
-            var res = await _aniclient.SaveMediaEntryAsync(mediaId, new MediaEntryMutation
+            MediaEntryStatus animeStatus = MediaEntryStatus.Planning;
+            string animeStatusAction = await DisplayActionSheet("", "Cancel", "Ok", "Planning", "Paused", "Repeating", "Current", "Dropped");
+
+            switch(animeStatusAction)
             {
-                Status = MediaEntryStatus.Planning,
-                Progress = 0,
-                Score = 0,
-            });
+                case "Planning":
+                    animeStatus = MediaEntryStatus.Planning;
+                    break;
+
+                case "Paused":
+                    animeStatus = MediaEntryStatus.Paused;
+                    break;
+
+                case "Repeating":
+                    animeStatus = MediaEntryStatus.Repeating;
+                    break;
+
+                case "Current":
+                    animeStatus = MediaEntryStatus.Current;
+                    break;
+
+                case "Dropped":
+                    animeStatus = MediaEntryStatus.Dropped;
+                    break;
+
+                default:
+                    break;
+            }
+
+            if(animeStatus.ToString() == "Current")
+            {
+                episodeNo = await DisplayPromptAsync("", "Episode: ");
+                var res = await _aniclient.SaveMediaEntryAsync(mediaId, new MediaEntryMutation
+                {
+                    Status = animeStatus,
+                    Progress = int.Parse(episodeNo),
+                });
+                flag = 1;
+            }
+            else
+            {
+                var res = await _aniclient.SaveMediaEntryAsync(mediaId, new MediaEntryMutation
+                {
+                    Status = animeStatus,
+                    Progress = 0,
+                });
+            }
 
             await _db.MediaEntries.AddAsync(new MediaEntryModel
             {
@@ -252,7 +294,7 @@ public partial class SearchPage : ContentPage
                 Status = status,
             });
             await _db.SaveChangesAsync();
-            toastText = "Anime added to you Anilist Anime list & AnilistHelper";
+            toastText = flag == 1 ? $"Watched episode {episodeNo} of {name}" : "Anime added to you Anilist Anime list & AnilistHelper";
 
             var toast = Toast.Make(toastText, ToastDuration.Long);
             await toast.Show(cancellationTokenSource.Token);
