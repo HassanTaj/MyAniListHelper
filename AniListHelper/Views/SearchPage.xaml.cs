@@ -287,21 +287,27 @@ public partial class SearchPage : ContentPage
                 });
             }
 
-            if (animeStatus.ToString() != "Dropped")
+            await _db.MediaEntries.AddAsync(new MediaEntryModel
             {
-                await _db.MediaEntries.AddAsync(new MediaEntryModel
-                {
-                    Name = name,
-                    OtherNames = otherNames,
-                    Status = status,
-                });
-                await _db.SaveChangesAsync();
-                toastText = flag == 1 ? $"Watched episode {episodeNo} of {name}" : "Anime added to you Anilist Anime list & AnilistHelper";
-            }
-            else toastText = $"Dropped {name}";
-            var toast = Toast.Make(toastText, ToastDuration.Long);
-            await toast.Show(cancellationTokenSource.Token);
+                Name = name,
+                OtherNames = otherNames,
+                Status = status,
+            });
+            await _db.SaveChangesAsync();
+            toastText = flag == 1 ? $"Watched episode {episodeNo} of {name}" : "Anime added to you Anilist Anime list & AnilistHelper";
+
         }
+        else
+        {
+            var res = await _aniclient.SaveMediaEntryAsync(mediaId, new MediaEntryMutation
+            {
+                Status = animeStatus,
+            });
+            toastText = $"Dropped {name}";
+        } 
+        
+        var toast = Toast.Make(toastText, ToastDuration.Long);
+        await toast.Show(cancellationTokenSource.Token);
     }
 
     private async void AnimeSelectionEvent(object sender, SelectionChangedEventArgs e)
