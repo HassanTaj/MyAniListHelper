@@ -14,6 +14,7 @@ using User = AniListNet.Objects.User;
 using CommunityToolkit.Maui.Alerts;
 using CommunityToolkit.Maui.Core;
 using static System.Net.Mime.MediaTypeNames;
+using static AndroidX.Concurrent.Futures.CallbackToFutureAdapter;
 
 namespace AniListHelper.Views;
 
@@ -237,30 +238,28 @@ public partial class SearchPage : ContentPage
         }
 
         MediaEntryStatus animeStatus = MediaEntryStatus.Planning;
-        string animeStatusAction = await DisplayActionSheet("", "Cancel", "Ok", "Planning", "Paused", "Repeating", "Current", "Dropped");
+        string animeStatusAction = await DisplayActionSheet("", "Cancel", "Ok", "Planning","Current", "Paused", "Completed", "Repeating",  "Dropped");
 
         switch (animeStatusAction)
         {
             case "Planning":
                 animeStatus = MediaEntryStatus.Planning;
                 break;
-
-            case "Paused":
-                animeStatus = MediaEntryStatus.Paused;
-                break;
-
-            case "Repeating":
-                animeStatus = MediaEntryStatus.Repeating;
-                break;
-
             case "Current":
                 animeStatus = MediaEntryStatus.Current;
                 break;
-
+            case "Paused":
+                animeStatus = MediaEntryStatus.Paused;
+                break;
+            case "Completed":
+                animeStatus = MediaEntryStatus.Completed;
+                break;
+            case "Repeating":
+                animeStatus = MediaEntryStatus.Repeating;
+                break;
             case "Dropped":
                 animeStatus = MediaEntryStatus.Dropped;
                 break;
-
             default:
                 break;
         }
@@ -303,7 +302,7 @@ public partial class SearchPage : ContentPage
             {
                 Status = animeStatus,
             });
-            toastText = $"Dropped {name}";
+            toastText = $"{animeStatus} {name}";
         } 
         
         var toast = Toast.Make(toastText, ToastDuration.Long);
