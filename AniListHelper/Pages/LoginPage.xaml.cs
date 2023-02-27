@@ -1,24 +1,25 @@
 ﻿using AniListHelper.Infrastructure;
-using AniListHelper.Views;
 using AniListNet;
 using Newtonsoft.Json;
 using System.Diagnostics;
 
-namespace AniListHelper;
+namespace AniListHelper.Pages;
 
-public partial class MainPage : ContentPage {
+public partial class LoginPage : ContentPage {
     private readonly SecureStorageProcessor _secureStorage;
     private readonly AniClient _aniclient;
     private readonly AppDbContext _db;
-
-    public MainPage() {
+    private readonly AppShell _appShell;
+    public LoginPage() {
         InitializeComponent();
-        _aniclient = new AniClient();
-        _secureStorage = new SecureStorageProcessor();
-        var path = Constants.Database.DatabasePath;
-        //data/user/0/com.companyname.anilisthelper/files/anilisthelper.db3
-        //_conn = new SQLiteAsyncConnection(Constants.Database.DatabasePath, Constants.Database.Flags);
-        _db = new AppDbContext();
+    }
+    public LoginPage(AppDbContext db, SecureStorageProcessor secureStorage, AniClient aniclient,
+        AppShell appShell) {
+        InitializeComponent();
+        _aniclient = aniclient;
+        _secureStorage = secureStorage;
+        _db = db;
+        _appShell = appShell;
         Init();
     }
     private async void Init() {
@@ -30,8 +31,9 @@ public partial class MainPage : ContentPage {
             // simple authentication with AniList
             var user = await _aniclient.GetAuthenticatedUserAsync();
             Preferences.Set(Constants.USER, JsonConvert.SerializeObject(user));
-            await Navigation.PushAsync(new SearchPage(_secureStorage, _aniclient, _db));
-
+            //await Navigation.PushAsync(new MainPage());
+            //Navigation.RemovePage(this);
+            Application.Current.MainPage = _appShell;
         }
         else {
             loginBtn.IsVisible = true;

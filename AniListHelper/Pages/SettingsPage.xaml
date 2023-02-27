@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    x:Class="AniListHelper.Pages.SettingsPage"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    NavigationPage.HasNavigationBar="False"
+    Shell.NavBarIsVisible="false">
+    <ContentPage.Resources>
+        <Style TargetType="Ellipse">
+            <Setter Property="Stroke" Value="10" />
+        </Style>
+        <!--<Style TargetType="Border">
+            <Setter Property="StrokeShape" Value="0" />
+            <Setter Property="StrokeThickness" Value="4" />
+        </Style>-->
+    </ContentPage.Resources>
+    <VerticalStackLayout>
+        <!--<Ellipse
+            x:Name="elipse"
+            Margin="5,40"
+            HeightRequest="150"
+            HorizontalOptions="CenterAndExpand"
+            Stroke="Red"
+            StrokeThickness="2"
+            VerticalOptions="CenterAndExpand"
+            WidthRequest="150">
+            <Ellipse.Fill>
+                <ImageBrush ImageSource="{Binding userImage}" />
+            </Ellipse.Fill>
+        </Ellipse>-->
+        <Border
+            HeightRequest="200"
+            HorizontalOptions="FillAndExpand"
+            StrokeThickness="0.4"
+            VerticalOptions="FillAndExpand">
+            <FlexLayout
+                AlignContent="Center"
+                AlignItems="Center"
+                JustifyContent="Center">
+
+                <Image
+                    x:Name="bgimg"
+                    Aspect="Center"
+                    ZIndex="1" />
+                <VerticalStackLayout>
+                    <Border
+                        HeightRequest="100"
+                        HorizontalOptions="CenterAndExpand"
+                        Stroke="Red"
+                        VerticalOptions="CenterAndExpand"
+                        WidthRequest="100"
+                        ZIndex="2">
+                        <Border.StrokeShape>
+                            <RoundRectangle CornerRadius="100" />
+                        </Border.StrokeShape>
+                        <Image
+                            x:Name="img"
+                            Aspect="Center"
+                            HeightRequest="150"
+                            WidthRequest="150"
+                            ZIndex="2" />
+                    </Border>
+                    <Label
+                        x:Name="userName"
+                        FontSize="20"
+                        HorizontalOptions="CenterAndExpand"
+                        TextColor="{StaticResource Primary}"
+                        VerticalOptions="CenterAndExpand" />
+                </VerticalStackLayout>
+            </FlexLayout>
+        </Border>
+
+
+    </VerticalStackLayout>
+</ContentPage>

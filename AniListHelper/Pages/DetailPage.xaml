@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    x:Class="AniListHelper.Pages.DetailPage"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:models="clr-namespace:AniListHelper.Models"
+    x:DataType="models:MediaEntryModel"
+    NavigationPage.HasBackButton="false"
+    Shell.NavBarIsVisible="false">
+
+    <ContentPage.ToolbarItems>
+        <ToolbarItem Clicked="Back_Tapped" IconImageSource="imgback.png" />
+        <ToolbarItem x:Name="LblHeading" />
+    </ContentPage.ToolbarItems>
+
+    <ScrollView>
+        <StackLayout>
+            <Image
+                x:Name="LblImage"
+                Aspect="AspectFill"
+                MaximumHeightRequest="350" />
+            <StackLayout Padding="10,10,10,0">
+                <Label x:Name="LblName" FontSize="Default" />
+                <Label
+                    x:Name="LblStatus"
+                    FontAttributes="Bold"
+                    FontSize="Small" />
+                <Label x:Name="LblOtherNames" FontSize="10" />
+                <Grid
+                    Margin="10,15,20,20"
+                    ColumnDefinitions="Auto,Auto,Auto"
+                    HorizontalOptions="Start"
+                    RowDefinitions="Auto,Auto,Auto">
+                    <Label
+                        Grid.Row="0"
+                        Grid.Column="0"
+                        Margin="10,0,50,0"
+                        FontAttributes="Bold"
+                        FontSize="Header"
+                        Text="Start Date" />
+                    <Label
+                        x:Name="LblStartDate"
+                        Grid.Row="1"
+                        Grid.Column="0"
+                        Margin="10,0,50,0"
+                        FontSize="Small" />
+                    <Label
+                        Grid.Row="0"
+                        Grid.Column="1"
+                        Margin="10,0,50,0"
+                        FontSize="Header"
+                        Text="End Date" />
+                    <Label
+                        x:Name="LblEndDate"
+                        Grid.Row="1"
+                        Grid.Column="1"
+                        Margin="10,0,50,0"
+                        FontAttributes="Bold"
+                        FontSize="Small" />
+                </Grid>
+            </StackLayout>
+        </StackLayout>
+    </ScrollView>
+
+    <!--<FlexLayout Margin="0,15,0,10">
+        <ImageButton Source="imgback.png" Clicked="Back_Tapped" FlexLayout.Basis="25%"
+                             BackgroundColor="Transparent" HeightRequest="30" HorizontalOptions="Start"
+                             VerticalOptions="Center"/>
+        <Label x:Name="LblHeading" FontSize="Medium" FontAttributes="Bold"
+                       LineBreakMode="WordWrap" MaxLines="1" FlexLayout.Basis="70%" />
+
+    </FlexLayout>-->
+</ContentPage>

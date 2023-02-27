@@ -1,11 +1,11 @@
-﻿namespace AniListHelper;
+﻿using AniListHelper.Pages;
 
-public partial class App : Application
-{
-	public App()
-	{
-		InitializeComponent();
+namespace AniListHelper;
 
-		MainPage = new NavigationPage(new AppShell());
+public partial class App : Application {
+    public App(LoginPage loginpage) {
+        InitializeComponent();
+
+        MainPage = loginpage;
     }
 }

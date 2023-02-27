@@ -4,14 +4,44 @@
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:local="clr-namespace:AniListHelper"
+    xmlns:pages="clr-namespace:AniListHelper.Pages"
+    NavigationPage.HasNavigationBar="False"
     Shell.FlyoutBehavior="Disabled"
-    Shell.NavBarIsVisible="false"
-    NavigationPage.HasNavigationBar="False">
+    Shell.NavBarIsVisible="false">
+    <Shell.Resources>
+        <Style TargetType="Tab">
+            <Setter Property="Shell.TabBarBackgroundColor" Value="#000" />
+            <Setter Property="Shell.TabBarTitleColor" Value="#d40128" />
+            <Setter Property="Shell.TabBarUnselectedColor" Value="White" />
+            <Setter Property="Shell.TabBarDisabledColor" Value="Green" />
+        </Style>
+    </Shell.Resources>
 
-    <ShellContent
-        Shell.NavBarIsVisible="false"
-        Title="Home"
-        ContentTemplate="{DataTemplate local:MainPage}"
-        Route="MainPage" />
-
+    <TabBar x:Name="tabBar">
+        <Tab Title="Search" Icon="search.svg">
+            <ShellContent
+                Title="Search"
+                ContentTemplate="{DataTemplate pages:SearchPage}"
+                FlyoutItemIsVisible="True"
+                Route="SearchPage"
+                Shell.FlyoutBehavior="Disabled"
+                Shell.NavBarIsVisible="false" />
+        </Tab>
+        <Tab Title="My Anime" Icon="home.svg">
+            <ShellContent
+                Title="My Anime"
+                ContentTemplate="{DataTemplate pages:MyAnimePage}"
+                Route="MyAnimePage"
+                Shell.FlyoutBehavior="Disabled"
+                Shell.NavBarIsVisible="false" />
+        </Tab>
+        <Tab Title="Settings" Icon="settings.svg">
+            <ShellContent
+                Title="Settings"
+                ContentTemplate="{DataTemplate pages:SettingsPage}"
+                Route="SettingsPage"
+                Shell.FlyoutBehavior="Disabled"
+                Shell.NavBarIsVisible="false" />
+        </Tab>
+    </TabBar>
 </Shell>

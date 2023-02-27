@@ -3,26 +3,19 @@ using AniListHelper.Models;
 using AniListNet;
 using AniListNet.Objects;
 using AniListNet.Parameters;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Maui;
-using Microsoft.Maui.Controls;
-using Newtonsoft.Json;
-using SQLite;
-using System.Collections.ObjectModel;
-using System.Linq;
-using User = AniListNet.Objects.User;
 using CommunityToolkit.Maui.Alerts;
 using CommunityToolkit.Maui.Core;
-using static System.Net.Mime.MediaTypeNames;
-using static AndroidX.Concurrent.Futures.CallbackToFutureAdapter;
+using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json;
+using System.Collections.ObjectModel;
+using User = AniListNet.Objects.User;
 
-namespace AniListHelper.Views;
+namespace AniListHelper.Pages;
 
 public partial class SearchPage : ContentPage
 {
     private readonly SecureStorageProcessor _secureStorage;
     private readonly AniClient _aniclient;
-    //private readonly SQLiteAsyncConnection _db;
     private readonly AppDbContext _db;
     private List<MediaEntryModel> _data = new List<MediaEntryModel>();
     private User _user;
@@ -82,7 +75,7 @@ public partial class SearchPage : ContentPage
                 mediaEntries.AddRange(alluserEntries.Data);
                 if (pageindex != userEntries.LastPageIndex && alluserEntries.HasNextPage == true)
                 {
-                    pageindex++;
+                    pageindex++;                         
                 }
                 else
                 {
@@ -95,9 +88,9 @@ public partial class SearchPage : ContentPage
                 var mediaList = mediaEntries.Select(x => new MediaEntryModel
                 {
                     Name = $"{x.Media.Title.PreferredTitle}",
-                    //ImageUrl = x.Media.Cover.MediumImageUrl.ToString(),
                     OtherNames = string.Join(",", new string[] { x.Media.Title.EnglishTitle, x.Media.Title.RomajiTitle, x.Media.Title.NativeTitle }.Where(x => !string.IsNullOrEmpty(x)).ToList()),
                     Status = x.Status.ToString(),
+                    ImageUrl = x?.Media?.BannerImageUrl?.AbsoluteUri ?? x?.Media?.Cover?.MediumImageUrl?.AbsoluteUri ?? ""
                     //startDate = x.StartDate.ToString(),
                     //endDate = x.Progress.ToString(),
                 });
@@ -108,10 +101,6 @@ public partial class SearchPage : ContentPage
 
         lodingView.IsVisible = false;
         itemsView.IsVisible = true;
-
-        //animeListview.ItemsSource = MediaEntries;
-        //_data = await _db.MediaEntries.ToListAsync();
-        //animeListview.SetBinding(ItemsView.HeaderProperty, ".");
     }
 
     protected override bool OnBackButtonPressed()
@@ -120,6 +109,7 @@ public partial class SearchPage : ContentPage
 
         //    return base.OnBackButtonPressed();
         //}
+        var items = Navigation.NavigationStack;
         return _aniclient.IsAuthenticated ? false : true;
     }
 
@@ -197,6 +187,7 @@ public partial class SearchPage : ContentPage
                 Name = $"{x.Title.PreferredTitle}",
                 OtherNames = string.Join(",", new string[] { x.Title.EnglishTitle, x.Title.RomajiTitle, x.Title.NativeTitle }.Where(x => !string.IsNullOrEmpty(x)).ToList()),
                 Status = "",
+                ImageUrl = x?.BannerImageUrl?.AbsoluteUri ?? x?.Cover?.MediumImageUrl?.AbsoluteUri ?? ""
             }).ToList();
             _data = data;
             data.ForEach(i => MediaEntries.Add(i));
@@ -313,10 +304,10 @@ public partial class SearchPage : ContentPage
     {
         var selectedItem = e.CurrentSelection.FirstOrDefault() as MediaEntryModel;
         if (selectedItem == null) return;
-        //await Navigation.PushAsync(new DetailPage(selectedItem));
+        await Navigation.PushAsync(new DetailPage(selectedItem));
         //((CollectionView)sender).SelectedItem = null;
 
-        AnimeSyncAsync(selectedItem);
+        //AnimeSyncAsync(selectedItem);
     }
 
     async void GridArea_Tapped(System.Object sender, System.EventArgs e)

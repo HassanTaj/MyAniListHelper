@@ -40,7 +40,7 @@
 
 		<!-- Images -->
 		<MauiImage Include="Resources\Images\*" />
-		<MauiImage Update="Resources\Images\dotnet_bot.svg" BaseSize="168,208" />
+		<MauiImage Update="Resources\Images\robot.svg" BaseSize="168,208" />
 
 		<!-- Custom Fonts -->
 		<MauiFont Include="Resources\Fonts\*" />
@@ -50,10 +50,15 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	  <None Remove="Platforms\Android\Resources\values\styles.xml" />
 	  <None Remove="Resources\Images\back.png" />
 	  <None Remove="Resources\Images\bin.png" />
 	  <None Remove="Resources\Images\delete.png" />
+	  <None Remove="Resources\Images\home.svg" />
 	  <None Remove="Resources\Images\imgback.png" />
+	  <None Remove="Resources\Images\robot.svg" />
+	  <None Remove="Resources\Images\search.svg" />
+	  <None Remove="Resources\Images\settings.svg" />
 	  <None Remove="Resources\Images\sync.png" />
 	</ItemGroup>
 
@@ -63,18 +68,32 @@
 	  <PackageReference Include="IdentityModel.OidcClient" Version="5.2.1" />
 	  <PackageReference Include="Microsoft.Data.Sqlite.Core" Version="7.0.3" />
 	  <PackageReference Include="Microsoft.EntityFrameworkCore" Version="7.0.3" />
+	  <PackageReference Include="Microsoft.EntityFrameworkCore.Abstractions" Version="7.0.3" />
+	  <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="7.0.3" />
 	  <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="7.0.3" />
 	  <PackageReference Include="sqlite-net-pcl" Version="1.8.116" />
 	</ItemGroup>
 
 	<ItemGroup>
-	  <Compile Update="Views\SearchPage.xaml.cs">
+	  <Compile Update="Pages\LoginPage.xaml.cs">
+	    <DependentUpon>LoginPage.xaml</DependentUpon>
+	  </Compile>
+	  <Compile Update="Pages\SearchPage.xaml.cs">
 	    <DependentUpon>SearchPage.xaml</DependentUpon>
 	  </Compile>
 	</ItemGroup>
 
 	<ItemGroup>
-	  <MauiXaml Update="Views\SearchPage.xaml">
+	  <MauiXaml Update="Pages\MainPage.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="Pages\MyAnimePage.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="Pages\SearchPage.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="Pages\SettingsPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	</ItemGroup>

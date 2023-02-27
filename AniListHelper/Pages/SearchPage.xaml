@@ -1,0 +1,234 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    x:Class="AniListHelper.Pages.SearchPage"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:models="clr-namespace:AniListHelper.Models"
+    NavigationPage.HasNavigationBar="False"
+    Shell.NavBarIsVisible="false">
+
+    <ContentPage.Resources>
+        <Style x:Key="btnStyle" TargetType="Button">
+            <Setter Property="BackgroundColor" Value="#1f1f1f" />
+            <Setter Property="TextColor" Value="#d40128" />
+            <Setter Property="FontSize" Value="12" />
+            <Setter Property="CornerRadius" Value="0" />
+        </Style>
+    </ContentPage.Resources>
+
+    <Grid>
+        <SwipeView
+            FlexLayout.Basis="45"
+            HorizontalOptions="FillAndExpand"
+            VerticalOptions="StartAndExpand">
+            <SwipeView.LeftItems>
+                <SwipeItems>
+                    <SwipeItem
+                        BackgroundColor="LightGreen"
+                        Clicked="Button_Clicked"
+                        IconImageSource="sync.png"
+                        Invoked="Button_Clicked"
+                        Text="Add to list" />
+                </SwipeItems>
+            </SwipeView.LeftItems>
+            <Grid x:Name="MenuContainer" IgnoreSafeArea="{OnPlatform Android=True, iOS=False}">
+
+                <Grid.Background>
+                    <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                        <GradientStop Offset="0.0" Color="#000" />
+                        <GradientStop Offset="1.0" Color="#000000" />
+                    </LinearGradientBrush>
+                </Grid.Background>
+
+                <Grid.GestureRecognizers>
+                    <TapGestureRecognizer Tapped="GridArea_Tapped" />
+                </Grid.GestureRecognizers>
+
+                <VerticalStackLayout
+                    Margin="0,52,24,0"
+                    HorizontalOptions="End"
+                    Spacing="20">
+
+                    <!--<Label HorizontalOptions="End" Text="Watching" />
+                    <Label HorizontalOptions="End" Text="Completed" />
+                    <Label HorizontalOptions="End" Text="Plaining" />-->
+                    <!--<Label
+                    Text="MENU"
+                    Style="{StaticResource PageHeaderStyle}"
+                    HorizontalOptions="End"/>
+
+                <Label
+                    Text="Option 1 (with icon)"
+                    Style="{StaticResource PageHeaderSubtitleStyle}"
+                    HorizontalOptions="End" />
+
+                <Label
+                    Text="Option 2 (with icon)"
+                    Style="{StaticResource PageHeaderSubtitleStyle}"
+                    HorizontalOptions="End" />
+
+                <Label
+                    Text="Option 3 (with icon)"
+                    Style="{StaticResource PageHeaderSubtitleStyle}"
+                    HorizontalOptions="End" />
+
+                <Label
+                    Text="Option 4 (with icon)"
+                    Style="{StaticResource PageHeaderSubtitleStyle}"
+                    HorizontalOptions="End" />
+
+                <Label
+                    Text="Option 5 (with icon)"
+                    Style="{StaticResource PageHeaderSubtitleStyle}"
+                    HorizontalOptions="End" />
+
+                <Label
+                    Text="Option 6 (with icon)"
+                    Style="{StaticResource PageHeaderSubtitleStyle}"
+                    HorizontalOptions="End" />-->
+
+                </VerticalStackLayout>
+            </Grid>
+
+        </SwipeView>
+
+        <!--  Main Content  -->
+        <FlexLayout
+            x:Name="SearchContent"
+            Margin="0"
+            Direction="Column"
+            FlexLayout.Basis="Auto"
+            Position="Relative"
+            VerticalOptions="FillAndExpand"
+            Wrap="NoWrap">
+            <VerticalStackLayout
+                Margin="0"
+                FlexLayout.Basis="65"
+                HorizontalOptions="FillAndExpand"
+                VerticalOptions="StartAndExpand">
+                <StackLayout Padding="5" Orientation="Horizontal">
+                    <SearchBar
+                        x:Name="searchEntry"
+                        BackgroundColor="#1e1e1e"
+                        HorizontalOptions="FillAndExpand"
+                        SearchButtonPressed="searchBtn_Clicked"
+                        TextColor="#fff" />
+                    <Button
+                        x:Name="searchBtn"
+                        Clicked="searchBtn_Clicked"
+                        Style="{StaticResource btnStyle}"
+                        Text="Search" />
+                </StackLayout>
+
+            </VerticalStackLayout>
+
+            <CollectionView
+                x:Name="itemsView"
+                FlexLayout.Basis="45"
+                HorizontalOptions="FillAndExpand"
+                ItemSizingStrategy="MeasureAllItems"
+                ItemsLayout="VerticalList"
+                ItemsSource="{Binding MediaEntries}"
+                SelectionChanged="AnimeSelectionEvent"
+                SelectionMode="Single"
+                VerticalOptions="StartAndExpand">
+                <CollectionView.ItemTemplate>
+                    <DataTemplate x:DataType="models:MediaEntryModel">
+                        <SwipeView
+                            x:Name="itemsView"
+                            Padding="10,5"
+                            FlexLayout.Basis="45"
+                            HorizontalOptions="FillAndExpand"
+                            VerticalOptions="StartAndExpand">
+                            <SwipeView.LeftItems>
+                                <SwipeItems>
+                                    <SwipeItem
+                                        BackgroundColor="LightGreen"
+                                        IconImageSource="sync.png"
+                                        Invoked="OnAddToListSwipeItemInvoked"
+                                        Text="Add to list" />
+                                </SwipeItems>
+                            </SwipeView.LeftItems>
+                            <SwipeView.RightItems>
+                                <SwipeItems Mode="Execute">
+                                    <SwipeItem
+                                        BackgroundColor="DarkRed"
+                                        IconImageSource="delete.png"
+                                        Invoked="OnDeleteSwipeItemInvoked"
+                                        Text="Delete" />
+                                </SwipeItems>
+                            </SwipeView.RightItems>
+                            <FlexLayout
+                                AlignItems="Start"
+                                Direction="Row"
+                                JustifyContent="Start">
+                                <Border Margin="0,0,5,0">
+                                    <Border.StrokeShape>
+                                        <RoundRectangle CornerRadius="3,3,3,3" />
+                                    </Border.StrokeShape>
+                                    <Image
+                                        Aspect="AspectFill"
+                                        FlexLayout.Basis="30%"
+                                        FlexLayout.Grow="1"
+                                        HeightRequest="100"
+                                        Source="{Binding ImageUrl}"
+                                        WidthRequest="80" />
+                                </Border>
+                                <StackLayout FlexLayout.Basis="70%" Spacing="7">
+                                    <Label
+                                        FontAttributes="Bold"
+                                        FontSize="18"
+                                        LineBreakMode="TailTruncation"
+                                        Text="{Binding Name}"
+                                        TextColor="{StaticResource Primary}" />
+                                    <Label
+                                        FontAttributes="Italic"
+                                        FontSize="Caption"
+                                        LineBreakMode="TailTruncation"
+                                        Text="{Binding OtherNames}"
+                                        TextColor="White"
+                                        VerticalOptions="End" />
+                                    <Label
+                                        FontAttributes="Bold"
+                                        FontSize="Small"
+                                        Text="{Binding Status}"
+                                        TextColor="White" />
+                                </StackLayout>
+                            </FlexLayout>
+                        </SwipeView>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+
+            </CollectionView>
+
+            <VerticalStackLayout
+                x:Name="lodingView"
+                FlexLayout.Basis="Auto"
+                HorizontalOptions="FillAndExpand"
+                IsVisible="True"
+                VerticalOptions="FillAndExpand">
+                <Label
+                    x:Name="progressLabel"
+                    HorizontalOptions="CenterAndExpand"
+                    Text="Loading.."
+                    VerticalOptions="CenterAndExpand" />
+                <Button
+                    x:Name="searchFromAniList"
+                    Margin="10"
+                    Clicked="searchFromAniList_Clicked"
+                    IsVisible="False"
+                    Style="{StaticResource btnStyle}"
+                    Text="Search on anilist and add" />
+
+                <ActivityIndicator
+                    x:Name="activityIndicator"
+                    HorizontalOptions="CenterAndExpand"
+                    IsRunning="True"
+                    IsVisible="True"
+                    VerticalOptions="CenterAndExpand" />
+            </VerticalStackLayout>
+
+        </FlexLayout>
+    </Grid>
+
+</ContentPage>

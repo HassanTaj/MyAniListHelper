@@ -6,7 +6,8 @@ namespace AniListHelper.Infrastructure {
         public DbSet<MediaEntryModel> MediaEntries { get; set; }
         public AppDbContext() {
             //Database.EnsureDeleted();
-            Database.EnsureCreated();
+            //Database.EnsureCreated();
+            //Database.Migrate();
         }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder) {
