@@ -1,3 +1,4 @@
+using Android.OS;
 using AniListHelper.Infrastructure;
 using AniListHelper.Models;
 using AniListNet;
@@ -219,17 +220,20 @@ public partial class SearchPage : ContentPage
         var otherNames = item.OtherNames;
         var status = item.Status;
         var toastText = "";
-        string episodeNo = "";
+        string episodeNo = null;
+        int? totalEpisodes = null;
 
         var result = await _aniclient.SearchMediaAsync(item.Name);
 
         if (result != null)
         {
             mediaId = result.Data[0].Id;
+            totalEpisodes = result.Data[0].Episodes;
+            Console.WriteLine("total no. of episode: ", totalEpisodes);
         }
 
         MediaEntryStatus animeStatus = MediaEntryStatus.Planning;
-        string animeStatusAction = await DisplayActionSheet("", "Cancel", "Ok", "Planning","Current", "Paused", "Completed", "Repeating",  "Dropped");
+        string animeStatusAction = await DisplayActionSheet("", "Cancel", "Ok", "Planning", "Current", "Paused", "Completed", "Repeating", "Dropped");
 
         switch (animeStatusAction)
         {
@@ -258,9 +262,18 @@ public partial class SearchPage : ContentPage
         var isAlreadyInDB = _db.MediaEntries.FirstOrDefault(x => x.Name == name) == null ? false : true;
         if (!isAlreadyInDB && animeStatus.ToString() != "Dropped")
         {
-            if(animeStatus.ToString() == "Current")
+            if (animeStatus.ToString() == "Current")
             {
-                episodeNo = await DisplayPromptAsync("", "Episode: ");
+                while (episodeNo == null)
+                {
+                    episodeNo = await DisplayPromptAsync("Episodes", $"Enter value from 0 to {totalEpisodes} in-between");
+                    if (int.Parse(episodeNo) < totalEpisodes && int.Parse(episodeNo) > 0)
+                    {
+                        break;
+                    }
+                    episodeNo = null;
+                }
+
                 var res = await _aniclient.SaveMediaEntryAsync(mediaId, new MediaEntryMutation
                 {
                     Status = animeStatus,
@@ -294,8 +307,8 @@ public partial class SearchPage : ContentPage
                 Status = animeStatus,
             });
             toastText = $"{animeStatus} {name}";
-        } 
-        
+        }
+
         var toast = Toast.Make(toastText, ToastDuration.Long);
         await toast.Show(cancellationTokenSource.Token);
     }
@@ -304,10 +317,10 @@ public partial class SearchPage : ContentPage
     {
         var selectedItem = e.CurrentSelection.FirstOrDefault() as MediaEntryModel;
         if (selectedItem == null) return;
-        await Navigation.PushAsync(new DetailPage(selectedItem));
+        //await Navigation.PushAsync(new DetailPage(selectedItem));
         //((CollectionView)sender).SelectedItem = null;
 
-        //AnimeSyncAsync(selectedItem);
+        AnimeSyncAsync(selectedItem);
     }
 
     async void GridArea_Tapped(System.Object sender, System.EventArgs e)
