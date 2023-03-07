@@ -9,15 +9,14 @@ public partial class AppShell : Shell {
 
     }
     protected override bool OnBackButtonPressed() {
-        if (Navigation.NavigationStack.Count <= 2) {
-#if ANDROID
-            Application.Current.Quit();
-#endif
-
-#if WINDOWS
-            Application.Current?.CloseWindow(Application.Current.MainPage.Window);
-#endif
-        }
+//        if (Navigation.NavigationStack.Count <= 2) {
+//#if ANDROID
+//            Application.Current.Quit();
+//#endif
+//#if WINDOWS
+//            Application.Current?.CloseWindow(Application.Current.MainPage.Window);
+//#endif
+//}
         return base.OnBackButtonPressed();
     }
 }

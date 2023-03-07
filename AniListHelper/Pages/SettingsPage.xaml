@@ -14,20 +14,7 @@
             <Setter Property="StrokeThickness" Value="4" />
         </Style>-->
     </ContentPage.Resources>
-    <VerticalStackLayout>
-        <!--<Ellipse
-            x:Name="elipse"
-            Margin="5,40"
-            HeightRequest="150"
-            HorizontalOptions="CenterAndExpand"
-            Stroke="Red"
-            StrokeThickness="2"
-            VerticalOptions="CenterAndExpand"
-            WidthRequest="150">
-            <Ellipse.Fill>
-                <ImageBrush ImageSource="{Binding userImage}" />
-            </Ellipse.Fill>
-        </Ellipse>-->
+    <VerticalStackLayout HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">
         <Border
             HeightRequest="200"
             HorizontalOptions="FillAndExpand"
@@ -69,7 +56,5 @@
                 </VerticalStackLayout>
             </FlexLayout>
         </Border>
-
-
     </VerticalStackLayout>
 </ContentPage>

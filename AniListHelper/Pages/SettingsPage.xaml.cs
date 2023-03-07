@@ -19,9 +19,9 @@ public partial class SettingsPage : ContentPage {
             _user = JsonConvert.DeserializeObject<User>(userstr);
             userId = _user.Id;
         }
-        img.Source = _user?.Avatar?.MediumImageUrl?.AbsoluteUri?? string.Empty;
-        bgimg.Source = string.Empty; // _user.BannerImageUrl?.AbsoluteUri ?? string.Empty;
-        userBgImage = _user.BannerImageUrl?.AbsoluteUri?? string.Empty;
-        userName.Text = _user.Name;
+        //img.Source = _user?.Avatar?.MediumImageUrl?.AbsoluteUri?? string.Empty;
+        //bgimg.Source = string.Empty; // _user.BannerImageUrl?.AbsoluteUri ?? string.Empty;
+        //userBgImage = _user.BannerImageUrl?.AbsoluteUri?? string.Empty;
+        //userName.Text = _user.Name;
     }
 }
