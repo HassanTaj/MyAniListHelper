@@ -76,7 +76,7 @@ public partial class SearchPage : ContentPage
                 mediaEntries.AddRange(alluserEntries.Data);
                 if (pageindex != userEntries.LastPageIndex && alluserEntries.HasNextPage == true)
                 {
-                    pageindex++;                         
+                    pageindex++;
                 }
                 else
                 {
@@ -259,58 +259,61 @@ public partial class SearchPage : ContentPage
                 break;
         }
 
-        var isAlreadyInDB = _db.MediaEntries.FirstOrDefault(x => x.Name == name) == null ? false : true;
-        if (!isAlreadyInDB && animeStatus.ToString() != "Dropped")
+        if (animeStatusAction.ToString() != "" && animeStatusAction.ToString() != "Ok" && animeStatusAction.ToString() != "Cancel")
         {
-            if (animeStatus.ToString() == "Current")
+            var isAlreadyInDB = _db.MediaEntries.FirstOrDefault(x => x.Name == name) == null ? false : true;
+            if (!isAlreadyInDB && animeStatus.ToString() != "Dropped")
             {
-                while (episodeNo == null)
+                if (animeStatus.ToString() == "Current")
                 {
-                    episodeNo = await DisplayPromptAsync("Episodes", $"Enter value from 0 to {totalEpisodes} in-between");
-                    if (int.Parse(episodeNo) < totalEpisodes && int.Parse(episodeNo) > 0)
+                    while (episodeNo == null)
                     {
-                        break;
+                        episodeNo = await DisplayPromptAsync("Episodes", $"Enter value from 0 to {totalEpisodes} in-between");
+                        if (int.Parse(episodeNo) < totalEpisodes && int.Parse(episodeNo) > 0)
+                        {
+                            break;
+                        }
+                        episodeNo = null;
                     }
-                    episodeNo = null;
+
+                    var res = await _aniclient.SaveMediaEntryAsync(mediaId, new MediaEntryMutation
+                    {
+                        Status = animeStatus,
+                        Progress = int.Parse(episodeNo),
+                    });
+                    flag = 1;
+                }
+                else
+                {
+                    var res = await _aniclient.SaveMediaEntryAsync(mediaId, new MediaEntryMutation
+                    {
+                        Status = animeStatus,
+                        Progress = 0,
+                    });
                 }
 
-                var res = await _aniclient.SaveMediaEntryAsync(mediaId, new MediaEntryMutation
+                await _db.MediaEntries.AddAsync(new MediaEntryModel
                 {
-                    Status = animeStatus,
-                    Progress = int.Parse(episodeNo),
+                    Name = name,
+                    OtherNames = otherNames,
+                    Status = status,
                 });
-                flag = 1;
+                await _db.SaveChangesAsync();
+                toastText = flag == 1 ? $"Watched episode {episodeNo} of {name}" : "Anime added to your Anilist Anime list & AnilistHelper";
+
             }
             else
             {
                 var res = await _aniclient.SaveMediaEntryAsync(mediaId, new MediaEntryMutation
                 {
                     Status = animeStatus,
-                    Progress = 0,
                 });
+                toastText = $"{animeStatus} {name}";
             }
 
-            await _db.MediaEntries.AddAsync(new MediaEntryModel
-            {
-                Name = name,
-                OtherNames = otherNames,
-                Status = status,
-            });
-            await _db.SaveChangesAsync();
-            toastText = flag == 1 ? $"Watched episode {episodeNo} of {name}" : "Anime added to you Anilist Anime list & AnilistHelper";
-
+            var toast = Toast.Make(toastText, ToastDuration.Long);
+            await toast.Show(cancellationTokenSource.Token);
         }
-        else
-        {
-            var res = await _aniclient.SaveMediaEntryAsync(mediaId, new MediaEntryMutation
-            {
-                Status = animeStatus,
-            });
-            toastText = $"{animeStatus} {name}";
-        }
-
-        var toast = Toast.Make(toastText, ToastDuration.Long);
-        await toast.Show(cancellationTokenSource.Token);
     }
 
     private async void AnimeSelectionEvent(object sender, SelectionChangedEventArgs e)
