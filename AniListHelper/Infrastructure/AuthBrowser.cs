@@ -6,7 +6,7 @@ namespace AniListHelper.Infrastructure {
         public async Task<BrowserResult> InvokeAsync(BrowserOptions options, CancellationToken cancellationToken = default) {
             try {
                 Microsoft.Maui.Authentication.WebAuthenticatorResult authResult =
-                    await WebAuthenticator.AuthenticateAsync(new Uri(options.StartUrl), new Uri("myapp://callback")); // Add your callback URL 
+                    await WebAuthenticator.AuthenticateAsync(new Uri(options.StartUrl), new Uri("myapp://")); // Add your callback URL 
 
                 var authorizeResponse = ToRawIdentityUrl(options.EndUrl, authResult);
 
@@ -51,6 +51,32 @@ namespace AniListHelper.Infrastructure {
                 Debug.WriteLine(ex);
                 throw;
             }
+        }
+    }
+
+    public class Browser : IdentityModel.OidcClient.Browser.IBrowser
+    {
+        public async Task<BrowserResult> InvokeAsync(BrowserOptions options, CancellationToken cancellationToken = default) {
+            var authenticatorOptions = new WebAuthenticatorOptions {
+                CallbackUrl = new Uri("myapp://"),
+                Url = new Uri(options.StartUrl)
+            };
+
+            // WebAuthenticator.PlatformAuthenticateAsync is in a local file that's altered to locate the 
+            // AppxManifest.xml file, as mentioned in my initial post.
+            WebAuthenticatorResult authResult =
+                await WebAuthenticator.AuthenticateAsync(authenticatorOptions);
+            return new BrowserResult() {
+                Response = ParseAuthenticatorResult(authResult)
+            };
+        }
+
+        string ParseAuthenticatorResult(WebAuthenticatorResult result) {
+            string code = result?.Properties["code"];
+            string scope = result?.Properties["scope"];
+            string state = result?.Properties["state"];
+            string sessionState = result?.Properties["session_state"];
+            return $"{"io.identitymodel.native://callback"}#code={code}&scope={scope}&state={state}&session_state={sessionState}";
         }
     }
 }

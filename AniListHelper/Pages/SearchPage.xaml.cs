@@ -1,4 +1,7 @@
+#if ANDROID
 using Android.OS;
+#endif
+
 using AniListHelper.Infrastructure;
 using AniListHelper.Models;
 using AniListNet;

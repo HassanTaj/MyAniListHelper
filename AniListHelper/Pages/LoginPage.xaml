@@ -46,7 +46,14 @@
                 IsVisible="true"
                 VerticalOptions="CenterAndExpand" />
 
+            <!--<WebView
+                x:Name="webView"
+                HeightRequest="500"
+                IsVisible="{OnPlatform Android=false,
+                                       WinUI=true}"
+                Navigated="WebView_Navigated" />-->
+
+
         </VerticalStackLayout>
     </ScrollView>
-
 </ContentPage>

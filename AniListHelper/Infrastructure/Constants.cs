@@ -9,6 +9,7 @@ namespace AniListHelper.Infrastructure {
 
             //public const string REDIRECT_URI = "localhost://callback";
             public static string AUTH_URI => $"https://anilist.co/api/v2/oauth/authorize?client_id={CLIENT_ID}&response_type=token";
+            public static string DESK_AUTH_URI => $"https://anilist.co/api/v2/oauth/authorize?client_id={CLIENT_ID}&redirect_uri={REDIRECT_URI}&response_type=code";
 
         }
         public const string USER = "user";
